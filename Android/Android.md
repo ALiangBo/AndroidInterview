@@ -52,103 +52,103 @@
 
 （二）Android源码相关分析
 
-Android动画框架实现原理
-Android各个版本API的区别
-Requestlayout，onlayout，onDraw，DrawChild区别与联系
-invalidate和postInvalidate的区别及使用
-Activity-Window-View三者的差别
-谈谈对Volley的理解
-如何优化自定义View
-低版本SDK如何实现高版本api？
-描述一次网络请求的流程
-HttpUrlConnection 和 okhttp关系
-Bitmap对象的理解
-looper架构
-ActivityThread，AMS，WMS的工作原理
-自定义View如何考虑机型适配
-自定义View的事件
-AstncTask+HttpClient 与 AsyncHttpClient有什么区别？
-LaunchMode应用场景
-AsyncTask 如何使用?
-SpareArray原理
-请介绍下ContentProvider 是如何实现数据共享的？
-AndroidService与Activity之间通信的几种方式
-IntentService原理及作用是什么？
-说说Activity、Intent、Service 是什么关系
-ApplicationContext和ActivityContext的区别
-SP是进程同步的吗?有什么方法做到同步？
-谈谈多线程在Android中的使用
-进程和 Application 的生命周期
-封装View的时候怎么知道view的大小
-RecycleView原理
-AndroidManifest的作用与理解
+* Android动画框架实现原理
+* Android各个版本API的区别
+* Requestlayout，onlayout，onDraw，DrawChild区别与联系
+* invalidate和postInvalidate的区别及使用
+* Activity-Window-View三者的差别
+* 谈谈对Volley的理解
+* 如何优化自定义View
+* 低版本SDK如何实现高版本api？
+* 描述一次网络请求的流程
+* HttpUrlConnection 和 okhttp关系
+* Bitmap对象的理解
+* looper架构
+* ActivityThread，AMS，WMS的工作原理
+* 自定义View如何考虑机型适配
+* 自定义View的事件
+* AstncTask+HttpClient 与 AsyncHttpClient有什么区别？
+* LaunchMode应用场景
+* AsyncTask 如何使用?
+* SpareArray原理
+* 请介绍下ContentProvider 是如何实现数据共享的？
+* AndroidService与Activity之间通信的几种方式
+* IntentService原理及作用是什么？
+* 说说Activity、Intent、Service 是什么关系
+* ApplicationContext和ActivityContext的区别
+* SP是进程同步的吗?有什么方法做到同步？
+* 谈谈多线程在Android中的使用
+* 进程和 Application 的生命周期
+* 封装View的时候怎么知道view的大小
+* RecycleView原理
+* AndroidManifest的作用与理解
 
 （三）常见的一些原理性问题
 
-Handler机制和底层实现
-Handler、Thread和HandlerThread的差别
-handler发消息给子线程，looper怎么启动？
-关于Handler，在任何地方new Handler 都是什么线程下?
-ThreadLocal原理，实现及如何保证Local属性？
-请解释下在单线程模型中Message、Handler、Message Queue、Looper之间的关系
-请描述一下View事件传递分发机制
-Touch事件传递流程
-事件分发中的onTouch 和onTouchEvent 有什么区别，又该如何使用？
-View和ViewGroup分别有哪些事件分发相关的回调方法
-View刷新机制
-View绘制流程
-自定义控件原理
-自定义View如何提供获取View属性的接口？
-Android代码中实现WAP方式联网
-AsyncTask机制
-AsyncTask原理及不足
-如何取消AsyncTask？
-为什么不能在子线程更新UI？
-ANR产生的原因是什么？
-ANR定位和修正
-oom是什么？
-什么情况导致oom？
-有什么解决方法可以避免OOM？
-Oom 是否可以try catch？为什么？
-内存泄漏是什么？
-什么情况导致内存泄漏？
-如何防止线程的内存泄漏？
-内存泄露场的解决方法
-内存泄漏和内存溢出区别？
-LruCache默认缓存大小
-ContentProvider的权限管理(解答：读写分离，权限控制-精确到表级，URL控制)
-如何通过广播拦截和abort一条短信？
-广播是否可以请求网络？
-广播引起anr的时间限制是多少？
-计算一个view的嵌套层级
-Activity栈
-Android线程有没有上限？
-线程池有没有上限？
-ListView重用的是什么？
-Android为什么引入Parcelable？
-有没有尝试简化Parcelable的使用？
+* Handler机制和底层实现
+* Handler、Thread和HandlerThread的差别
+* handler发消息给子线程，looper怎么启动？
+* 关于Handler，在任何地方new Handler 都是什么线程下?
+* ThreadLocal原理，实现及如何保证Local属性？
+* 请解释下在单线程模型中Message、Handler、Message Queue、Looper之间的关系
+* 请描述一下View事件传递分发机制
+* Touch事件传递流程
+* 事件分发中的onTouch 和onTouchEvent 有什么区别，又该如何使用？
+* View和ViewGroup分别有哪些事件分发相关的回调方法
+* View刷新机制
+* View绘制流程
+* 自定义控件原理
+* 自定义View如何提供获取View属性的接口？
+* Android代码中实现WAP方式联网
+* AsyncTask机制
+* AsyncTask原理及不足
+* 如何取消AsyncTask？
+* 为什么不能在子线程更新UI？
+* ANR产生的原因是什么？
+* ANR定位和修正
+* oom是什么？
+* 什么情况导致oom？
+* 有什么解决方法可以避免OOM？
+* Oom 是否可以try catch？为什么？
+* 内存泄漏是什么？
+* 什么情况导致内存泄漏？
+* 如何防止线程的内存泄漏？
+* 内存泄露场的解决方法
+* 内存泄漏和内存溢出区别？
+* LruCache默认缓存大小
+* ContentProvider的权限管理(解答：读写分离，权限控制-精确到表级，URL控制)
+* 如何通过广播拦截和abort一条短信？
+* 广播是否可以请求网络？
+* 广播引起anr的时间限制是多少？
+* 计算一个view的嵌套层级
+* Activity栈
+* Android线程有没有上限？
+* 线程池有没有上限？
+* ListView重用的是什么？
+* Android为什么引入Parcelable？
+* 有没有尝试简化Parcelable的使用？
 
 （四）开发中常见的一些问题
 
-ListView 中图片错位的问题是如何产生的?
-混合开发有了解吗？
-知道哪些混合开发的方式？说出它们的优缺点和各自使用场景？（解答：比如:RN，weex，H5，小程序，WPA等。做Android的了解一些前端js等还是很有好处的)；
-屏幕适配的处理技巧都有哪些?
-服务器只提供数据接收接口，在多线程或多进程条件下，如何保证数据的有序到达？
-动态布局的理解
-怎么去除重复代码？
-画出 Android 的大体架构图
-Recycleview和ListView的区别
-ListView图片加载错乱的原理和解决方案
-动态权限适配方案，权限组的概念
-Android系统为什么会设计ContentProvider？
-下拉状态栏是不是影响activity的生命周期
-如果在onStop的时候做了网络请求，onResume的时候怎么恢复？
-Bitmap 使用时候注意什么？
-Bitmap的recycler()
-Android中开启摄像头的主要步骤
-ViewPager使用细节，如何设置成每次只初始化当前的Fragment，其他的不初始化？
-点击事件被拦截，但是想传到下面的View，如何操作？
-微信主页面的实现方式
-微信上消息小红点的原理
-CAS介绍（这是阿里巴巴的面试题，我不是很了解，可以参考博客: CAS简介）
+* ListView 中图片错位的问题是如何产生的?
+* 混合开发有了解吗？
+* 知道哪些混合开发的方式？说出它们的优缺点和各自使用场景？（解答：比如:RN，weex，H5，小程序，WPA等。做Android的了解一些前端js等还是很有好处的)；
+* 屏幕适配的处理技巧都有哪些?
+* 服务器只提供数据接收接口，在多线程或多进程条件下，如何保证数据的有序到达？
+* 动态布局的理解
+* 怎么去除重复代码？
+* 画出 Android 的大体架构图
+* Recycleview和ListView的区别
+* ListView图片加载错乱的原理和解决方案
+* 动态权限适配方案，权限组的概念
+* Android系统为什么会设计ContentProvider？
+* 下拉状态栏是不是影响activity的生命周期
+* 如果在onStop的时候做了网络请求，onResume的时候怎么恢复？
+* Bitmap 使用时候注意什么？
+* Bitmap的recycler()
+* Android中开启摄像头的主要步骤
+* ViewPager使用细节，如何设置成每次只初始化当前的Fragment，其他的不初始化？
+* 点击事件被拦截，但是想传到下面的View，如何操作？
+* 微信主页面的实现方式
+* 微信上消息小红点的原理
+* CAS介绍（这是阿里巴巴的面试题，我不是很了解，可以参考博客: CAS简介）
