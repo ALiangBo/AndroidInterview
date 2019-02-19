@@ -6,7 +6,7 @@
 
 （一） java基础面试知识点
 
-* java中==和equals和hashCode的区别(https://github.com/shanzi716liya/AndroidInterview/blob/master/Java/level-1/diff-equals-hashCode.md)
+* [java中==和equals和hashCode的区别](https://github.com/shanzi716liya/AndroidInterview/blob/master/Java/level-1/diff-equals-hashCode.md)
 * int、char、long各占多少字节数
 * int与integer的区别
 * 谈谈对java多态的理解

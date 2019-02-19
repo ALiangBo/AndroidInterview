@@ -7,7 +7,7 @@
 
 （一）Android基础知识点
 
-* 四大组件是什么(https://www.baidu.com/)
+* [四大组件是什么](https://www.baidu.com/)
 * 四大组件的生命周期和简单用法
 * Activity之间的通信方式
 * Activity各种情况下的生命周期
