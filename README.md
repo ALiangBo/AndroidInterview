@@ -2,15 +2,15 @@
 
 [![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 
-> 面试题
+> 旺旺碎冰冰版面试题，打造皇家尊贵体验，帝王享受，一切为了孩子！
 
 
-## Features
-- [ ] Java面试题
-- [ ] Android面试题
+## Contents
+- [ ] [Java面试题](https://github.com/shanzi716liya/AndroidInterview/blob/master/Java/Java.md)
+- [ ] [Android面试题](https://github.com/shanzi716liya/AndroidInterview/blob/master/Android/Android.md)
 - [ ] 混合开发面试题
 - [ ] 高端技术面试题
-- [ ] 非技术性问题&HR问题
+- [ ] 非技术性问题&HR问题汇总
 
 
 ## Licence
