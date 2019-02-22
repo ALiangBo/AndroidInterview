@@ -9,249 +9,223 @@
 
 * [四大组件是什么](https://www.baidu.com/)
 
-  1. Activity
-      其中Activity是我们最常使用的组件，也是我们最熟悉的组件，一般用于呈现页面内容，处理用户交互等等
-
-  2. Service
-      Service是一个可以运行于后台的组件，我们一般用于处理一些不需要用户知道，但是又必须比较长时间存在的操作，比如下载
-
-  3. ContentProvider
-      主要用于进程间通信，比如暴露某个APP的信息内存给予另外一个APP获取使用，比如获取联系人等等
-
-  4. BroadcastReceiver
-      广播接受者主要用于接受广播信息，像我们日常使用中可能用于两种情况：
-
-  ​              APP内：界面间通信，例如退出app，可以发送自杀广播
-
-  ​              APP间：可以收到第三方发出的广播，进而进行对应的响应操作。
-
-  
+  - Activity
+    其中Activity是我们最常使用的组件，也是我们最熟悉的组件，一般用于呈现页面内容，处理用户交互等等
+  - Service
+    Service是一个可以运行于后台的组件，我们一般用于处理一些不需要用户知道，但是又必须比较长时间存在的操作，比如下载
+  - ContentProvider
+    主要用于进程间通信，比如暴露某个APP的信息内存给予另外一个APP获取使用，比如获取联系人等等
+  - BroadcastReceiver
+    广播接受者主要用于接受广播信息，像我们日常使用中可能用于两种情况：
+    - APP内：界面间通信，例如退出app，可以发送自杀广播
+    - APP间：可以收到第三方发出的广播，进而进行对应的响应操作。
 
   
 
 * 四大组件的生命周期和简单用法
 
-  ### 1. Activity
+  - Activity
 
-  生命周期
+    - 生命周期
 
-  oncreate()->onstart()->onresume()->onpause()->onstop()->ondestory()
+      oncreate()->onstart()->onresume()->onpause()->onstop()->ondestory()
 
-  简单用法
+    - 简单用法
 
-  startActivity
+      startActivity
 
-  
+  - Service
 
-  ### 2. Service
+    - 生命周期
+      - startService()的生命周期:
+        oncreate()->onstartComment()->onstart()->onDestory()
+      - bindService()的生命周期：
+        oncreate()->onbind()->onUnbind()->onDestroy()
 
-  1. 生命周期
-
-  - startService()的生命周期:
-     oncreate()->onstartComment()->onstart()->onDestory()
-  - bindService()的生命周期：
-     oncreate()->onbind()->onUnbind()->onDestroy()
-
-  1. 简单用法 
-     - startService()
+    - 简单用法 
+      - startService()
         通过简单的startService()进行service启动，此后启动该Service的组件无法把控Service的生命周期，理论上此后该Service可以在后台无期限运行（实际根据情况该Service可能会在任意一个时刻被杀死，这里牵连到了另外一个知识点：**Service防杀**）
         我们可以在onStartCommand()里面做我们要做的操作，注意Service跟Activity一样不可以做耗时操作，虽然运行anr时间比Activity多了近一倍。
-     - bindService()
+      - bindService()
         通过绑定的方式启动Service
         绑定后，该Service与启动绑定操作的组件形成绑定，当组件销毁时，该Service也随着销毁。
         其中组件与Service形成一个典型的BC体系，Service相当于服务器，组件可以通过**IBinder**像Service       发送请求并获取回应。
 
-  ##### 3. BroadcastReceiver（分为2种）:
+  - BroadcastReceiver（分为2种）:
 
-  - 简单用法 
+    - 简单用法 
 
-  - - 静态注册（常驻广播）
-       在AndroidManifest.xml中进行注册,App启动的时候自动注册到系统中，不受任何组件生命周期影响，（即便应用程序已经关闭），但是 *耗电*，*占内存* 
+      - 静态注册（常驻广播）
+        在AndroidManifest.xml中进行注册,App启动的时候自动注册到系统中，不受任何组件生命周期影响，（即便应用程序已经关闭），但是 *耗电*，*占内存* 
+      - 动态注册（非常驻广播）
+        在代码中进行注册,通过**IntentFilter**意图过滤器筛选需要监听的广播,
+        记得**注销**（推荐在onResume()注册，在onPause()注销），使用灵活，生命周期随组件变化
 
-  - - 动态注册（非常驻广播）
-       在代码中进行注册,通过**IntentFilter**意图过滤器筛选需要监听的广播,
-       记得**注销**（推荐在onResume()注册，在onPause()注销），使用灵活，生命周期随组件变化
+    - 全局广播
 
-  ###### 全局广播
+      - 普通广播（最常用的那种)
+      - 系统广播
+        系统广播无须开发者进行发送，我们只需做好广播接收器进行接收即可，常用的几个系统广播为：
+        - android.net.conn.CONNECTIVITY_CHANGE 监听网络变化
+        - Intent.ACTION_PACKAGE_ADDED 成功安装apk
+          ......
+      - 有序广播
+        有序广播是指广播按照一定的优先级被广播接受者依次接收，代码实例
+        **发送广播**
+        **定义2个广播接受者**
+        **动态注册2个广播接受者，设置不同的优先级**
+        **高优先级的广播接受者接受信息，篡改信息，塞回篡改后的信息**
+        **低优先级广播接收源信息，接收上一个广播信息，分别打印出来**
 
-  1. 普通广播（最常用的那种)
-  2. 系统广播
-      系统广播无须开发者进行发送，我们只需做好广播接收器进行接收即可，常用的几个系统广播为：
-      **android.net.conn.CONNECTIVITY_CHANGE 监听网络变化**
-      **Intent.ACTION_PACKAGE_ADDED** 成功安装apk
-      ... ...
-  3. 有序广播
-      有序广播是指广播按照一定的优先级被广播接受者依次接收，代码实例
-      **发送广播**
-      **定义2个广播接受者**
-      **动态注册2个广播接受者，设置不同的优先级**
-      **高优先级的广播接受者接受信息，篡改信息，塞回篡改后的信息**
-      **低优先级广播接收源信息，接收上一个广播信息，分别打印出来**
+    - 本地广播
 
-  ###### 本地广播
+      上面所讲的广播都是全局广播，全局广播指的是，我在甲App发送了一条广播，其中已App也可以收到这个广播信息，存在问题为：
 
-  上面所讲的广播都是全局广播，全局广播指的是，我在甲App发送了一条广播，其中已App也可以收到这个广播信息，存在问题为：
-
-  1. 其他app可以发送相对应的 intent-filter到我方App,导致我方错误处理
-
-  2. 其他app可以设置对应的 intent-filter接收我方App发出的广播，导致安全性问题
+      - 其他app可以发送相对应的 intent-filter到我方App,导致我方错误处理
+      - 其他app可以设置对应的 intent-filter接收我方App发出的广播，导致安全性问题
 
       为解决这个问题，我们可以使用本地广播：
 
-      1.方式一： 
+      - 方式一： 
+        - 设置exported为false(默认为true),使该广播只在app内传递
+        - 广播传递和接收时，添加响应的permission
+        - 通过**intent.setPackage(com.xxx.xxx)**
+      - 方式二 LocalBroadcastManager：
 
-     1. 设置exported为false(默认为true),使该广播只在app内传递
-     2. 广播传递和接收时，添加响应的permission
-     3. 通过**intent.setPackage(com.xxx.xxx)**
+  - ContentProvider
 
-  1. 方式二 LocalBroadcastManager：
+    - contentProvider 内容提供者
 
-  ##### ContentProvider
+    - contentresolver 内容解析器
 
-  1. contentProvider 内容提供者
-  2. contentresolver 内容解析器
-
-  
+      
 
 * Activity之间的通信方式
 
-  ### 1.Intent
+  - Intent
 
-  在startActivity()或者startActivityForResult()时，通过Intent携带需要的信息，但要注意，intent对携带写信的大小有限制
+    在startActivity()或者startActivityForResult()时，通过Intent携带需要的信息，但要注意，intent对携带写信的大小有限制
 
-  ### 2.广播Broadcast或者LocalBroadcast
+  - 广播Broadcast或者LocalBroadcast
 
-  在A中发出广播，在B中接收广播并解析其中数据
+    在A中发出广播，在B中接收广播并解析其中数据
 
-  ### 3.用数据存储的方式
+  - 用数据存储的方式
 
-  理论上凡是数据存储的方式，我们均能在A存储信息，并在B读取，达到通信的目的，具体方式如SharedPreference/SQLite/File/Android剪切板等
+    理论上凡是数据存储的方式，我们均能在A存储信息，并在B读取，达到通信的目的，具体方式如SharedPreference/SQLite/File/Android剪切板等
 
-  ### 4.使用静态变量
+  - 使用静态变量
 
-  在A中将静态变量赋值，在B中读取并置空
+    在A中将静态变量赋值，在B中读取并置空
 
-  ### 5.Service(IPC模型)，也就是上文的**bingService()**
+  - Service(IPC模型)，也就是上文的bingService()
 
-  ### 6.通过EventBus/rxBus 进行通信
+  - 通过EventBus/rxBus 进行通信
+
+    
 
 * Activity各种情况下的生命周期
 
-  正常情况下是：onCreate()->onStart()->onResume()->onPause()->onStop()->onDestory()
+  - 正常情况下是：onCreate()->onStart()->onResume()->onPause()->onStop()->onDestory()
 
-  被dialog遮罩情况下： 
+  - 被dialog遮罩情况下： 
+    - 如果是自身的dialog那么不会走自己的生命周期
+    - 如果是其他组件传递的dialog，那么会走onpause()
 
-  1. 如果是自身的dialog那么不会走自己的生命周期
-  2. 如果是其他组件传递的dialog，那么会走onpause()
-
-  可以看到我们前面有一个
-
-  onRestart()
-
-  的生命周期，这个生命周期我们不常用，具体是什么时机会被调用呢： 
-
-  1. home键，然后切换回来
-  2. 跳转到另外一个activity，然后back键
-  3. 从本应用跳转到另外一个应用，然后回来
+  - 可以看到我们前面有一个onRestart()的生命周期，这个生命周期我们不常用，具体是什么时机会被调用呢： 
+    - home键，然后切换回来
+    - 跳转到另外一个activity，然后back键
+    - 从本应用跳转到另外一个应用，然后回来
 
   
 
-  ### 基本的生命周期,
-
-  ### --`onCreate()` (Activity创建时调用 )
-
-   --`onStart()`(可见未获取焦点，无法与之交互 )
-   --`onResume()`(可见已获取焦点，可与之交互 )
-   --`onPause()`(可见，失去焦点 )
-   --`onStop()`(不可见 )
-   --`onRestart()`(Activity重启)
-   --`onDestroy()`(Activity销毁)
-
-  --`onSaceInstanceState`可能会被回收的时候调用,与上面的先后顺序各个Android版本不同
-   --`onResotreInstanceState`没有被回收的话就不会调用
-   --`onConfigurationChanged`
+  - 基本的生命周期
+    - --`onCreate()` (Activity创建时调用 )
+    -  --`onStart()`(可见未获取焦点，无法与之交互 )
+    -  --`onResume()`(可见已获取焦点，可与之交互 )
+    -  --`onPause()`(可见，失去焦点 )
+    -  --`onStop()`(不可见 )
+    -  --`onRestart()`(Activity重启)
+    -  --`onDestroy()`(Activity销毁)
+    - --`onSaceInstanceState`可能会被回收的时候调用,与上面的先后顺序各个Android版本不同
+    -  --`onResotreInstanceState`没有被回收的话就不会调用
+    -  --`onConfigurationChanged`
 
   
 
-  ### 各种情况下的生命周期
-
-  1.正常通过startActivity或者桌面快捷方式直接启动直到可见可正常交互
-   `onCreate()`--`onStart()`--`onResume()`
-   2.正常销毁,(在onResume之后),执行`finish()`方法或者点击回退按钮
-   `onPause()`--`onStop()`--`onDestroy()`
-   3.在`onCreate()`里调用`finish()`
-   `onCreate`--`onDestroy()`
-   4.在`onStart()`里调用`finish()`
-   `onCreate`--`onStart`--`onStop`--`onDestroy`
-   5.正常启动后按下Home键(API4.4`onSaveInstanceState`在`onPause`之后)
-   `onPause`--`onSaveInstanceState`--`onStop`
-   6.按下Home键没回收之前再点开
-   `onRestart`--`onStart`--`onResume`
-   7.出现Dialog
-   不调用任何生命周期
-   8.出现Dialog主题的Activity
-   `onPause`--`onSaveInstanceState`
-   9.`去掉dialog`
-   `onResume`
-   10.在`manifest`文件设置`android:configChanges`属性`orientation|keyboard|screenSize`
-   切换横/竖屏
-   `onConfigurationChanged`
-   11..在`manifest`文件设置`android:configChanges`属性`orientation|keyboard`
-   在4.4以上横屏
-   `onPause`--`onSaveInstanceState`--`onStop`--`onCreate()`--`onStart()`--`onResume()`
-   4.4以下(不一定,跟是否改变了屏幕大小有关)横屏
-   `onConfigurationChanged`
-   竖屏4.4以下
-   `onConfigurationChanged`
-   竖屏4.4以上
-   `onPause`--`onSaveInstanceState`--`onStop`--`onCreate()`--`onStart()`--`onResume()`
-   11..在`manifest`文件设置`android:configChanges`属性`orientation`
-   切横屏
-   `onPause`--`onSaveInstanceState`--`onStop`--`onCreate()`--`onStart()`--`onResume()`
-   切竖屏4.4以上一次2.3以下2次
-   `onPause`--`onSaveInstanceState`--`onStop`--`onCreate()`--`onStart()`--`onResume()`
-   `onPause`--`onSaveInstanceState`--`onStop`--`onCreate()`--`onStart()`--`onResume()`
-   12.设置launchMode的情况下,如果只是把Acitvity调回到前台
-   会执行`onNewIntent()`
+  - 各种情况下的生命周期
+    - 正常通过startActivity或者桌面快捷方式直接启动直到可见可正常交互
+       `onCreate()`--`onStart()`--`onResume()`
+    - 正常销毁,(在onResume之后),执行`finish()`方法或者点击回退按钮
+       `onPause()`--`onStop()`--`onDestroy()`
+    - 在`onCreate()`里调用`finish()`
+       `onCreate`--`onDestroy()`
+    - 在`onStart()`里调用`finish()`
+       `onCreate`--`onStart`--`onStop`--`onDestroy`
+    - 正常启动后按下Home键(API4.4`onSaveInstanceState`在`onPause`之后)
+       `onPause`--`onSaveInstanceState`--`onStop`
+    - 按下Home键没回收之前再点开
+       `onRestart`--`onStart`--`onResume`
+    - 出现Dialog
+       不调用任何生命周期
+    - 出现Dialog主题的Activity
+       `onPause`--`onSaveInstanceState`
+    -  `去掉dialog`
+       `onResume`
+    - 在`manifest`文件设置`android:configChanges`属性`orientation|keyboard|screenSize`
+       切换横/竖屏
+       `onConfigurationChanged`
+    - ..在`manifest`文件设置`android:configChanges`属性`orientation|keyboard`
+       在4.4以上横屏
+       `onPause`--`onSaveInstanceState`--`onStop`--`onCreate()`--`onStart()`--`onResume()`
+       4.4以下(不一定,跟是否改变了屏幕大小有关)横屏
+       `onConfigurationChanged`
+       竖屏4.4以下
+       `onConfigurationChanged`
+       竖屏4.4以上
+       `onPause`--`onSaveInstanceState`--`onStop`--`onCreate()`--`onStart()`--`onResume()`
+    - ..在`manifest`文件设置`android:configChanges`属性`orientation`
+       切横屏
+       `onPause`--`onSaveInstanceState`--`onStop`--`onCreate()`--`onStart()`--`onResume()`
+       切竖屏4.4以上一次2.3以下2次
+       `onPause`--`onSaveInstanceState`--`onStop`--`onCreate()`--`onStart()`--`onResume()`
+       `onPause`--`onSaveInstanceState`--`onStop`--`onCreate()`--`onStart()`--`onResume()`
+    - 设置launchMode的情况下,如果只是把Acitvity调回到前台
+       会执行`onNewIntent()`
 
   
 
 * 横竖屏切换的时候，Activity 各种情况下的生命周期
 
-  2种情况：
-
-  1. 不做任何配置，生命周期重新走一遍：完整流程为：onCreate()->onStart()->onResume()->onPause()->onSaveInstanceState()->onStop()->Ondestory()->onCreate()->onStart()->onRestoreInstanceState()->onResume()。
-  2. 做配置：**android:configChanges="orientation|screenSize"**
-      横竖屏不走其他生命周期
-
-  其中onSaveInstanceState()可以保存用户数据，对应的onRestoreInstanceState()可以读取之前保存的用户数据
+  - 不做任何配置，生命周期重新走一遍：完整流程为：onCreate()->onStart()->onResume()->onPause()->onSaveInstanceState()->onStop()->Ondestory()->onCreate()->onStart()->onRestoreInstanceState()->onResume()。
+  - 做配置：**android:configChanges="orientation|screenSize"**
+    横竖屏不走其他生命周期
+  - 其中onSaveInstanceState()可以保存用户数据，对应的onRestoreInstanceState()可以读取之前保存的用户数据
 
   
 
 * Activity与Fragment之间生命周期比较
 
-  activity有7个生命周期，fragment有十一个生命周期
+  - activity有7个生命周期，fragment有十一个生命周期
 
-  
+  - fragment以及activity生命周期
 
-  fragment以及activity生命周期
+    其中他们的关系是：
 
-  其中他们的关系是：
+    - 创建的时候：*Activity* 带动 *Fragment* 走生命周期，表格关系为：
 
-  1. 创建的时候：*Activity* 带动 *Fragment* 走生命周期，表格关系为：
+    | 所属     | Activity | Fragment                                         |
+    | -------- | -------- | ------------------------------------------------ |
+    | 创建操作 | onCreate | onAttach/onCreate/onCreateView/onActivityCreated |
+    | 创建操作 | onStart  | onStart()                                        |
 
-  | 所属     | Activity | Fragment                                         |
-  | -------- | -------- | ------------------------------------------------ |
-  | 创建操作 | onCreate | onAttach/onCreate/onCreateView/onActivityCreated |
-  | 创建操作 | onStart  | onStart()                                        |
+    - 销毁的时候：*Fragment* 带动 *Activity* 走生命周期，表格关系为：
 
-  1. 销毁的时候：*Fragment* 带动 *Activity* 走生命周期，表格关系为：
-
-  | 所属     | Fragment                               | Activity    |
-  | -------- | -------------------------------------- | ----------- |
-  | 创建操作 | onPause()                              | onPause()   |
-  | 创建操作 | onStop()                               | onStop()    |
-  | 创建操作 | onDestroyView()/onDestroy()/onDetach() | onDestroy() |
+    | 所属     | Fragment                               | Activity    |
+    | -------- | -------------------------------------- | ----------- |
+    | 创建操作 | onPause()                              | onPause()   |
+    | 创建操作 | onStop()                               | onStop()    |
+    | 创建操作 | onDestroyView()/onDestroy()/onDetach() | onDestroy() |
 
   
 
@@ -263,203 +237,197 @@
 
 * 两个Activity 之间跳转时必然会执行的是哪几个方法？
 
-  一般情况下比如说有两个activity,分别叫A,B。
-
-  当在A 里面激活B 组件的时候, A会调用onPause()方法,然后B调用onCreate() ,onStart(), onResume()。
-
-  这个时候B覆盖了A的窗体, A会调用onStop()方法。
-
-  如果B是个透明的窗口,或者是对话框的样式, 就不会调用A的onStop()方法。
-
-  如果B已经存在于Activity栈中，B就不会调用onCreate()方法。
+  - 一般情况下比如说有两个activity,分别叫A,B。
+  - 当在A 里面激活B 组件的时候, A会调用onPause()方法,然后B调用onCreate() ,onStart(), onResume()。
+  - 这个时候B覆盖了A的窗体, A会调用onStop()方法。
+  - 如果B是个透明的窗口,或者是对话框的样式, 就不会调用A的onStop()方法。
+  - 如果B已经存在于Activity栈中，B就不会调用onCreate()方法。
 
   
 
 * 前台切换到后台，然后再回到前台，Activity生命周期回调方法。弹出Dialog，生命值周期回调方法。
 
-  前台切换到后台：onPause()->onStop()
-   如果正常切换回来，那么会走onRestart()->onStart()->onResume()
-   如果很久没切回来，系统内存紧急被回收了，那么回来会重新走一次生命周期
-
-  弹出dialog
-   如果dialog是自身Activity弹出来的，则不会走生命周期
-   如果不是自身Activity弹出来的，则走onPause(),退出Dialog后走onRestart()->onResume()
+  - 前台切换到后台：onPause()->onStop()
+  - 如果正常切换回来，那么会走onRestart()->onStart()->onResume()
+  - 如果很久没切回来，系统内存紧急被回收了，那么回来会重新走一次生命周期
+  - 弹出dialog
+    - 如果dialog是自身Activity弹出来的，则不会走生命周期
+    - 如果不是自身Activity弹出来的，则走onPause(),退出Dialog后走onRestart()->onResume()
 
   
 
 * Activity的四种启动模式对比
 
-  ##### standard
+  - standard
 
-  这个是Activity的默认启动方式，我们不需要额外的配置
-   在该配置下，启动一个Activity就会在该应用的Activity栈中压入一个Activity,返回的时候就直接把该Activity弹出栈。
+    这个是Activity的默认启动方式，我们不需要额外的配置
+    在该配置下，启动一个Activity就会在该应用的Activity栈中压入一个Activity,返回的时候就直接把该Activity弹出栈。
 
-  ##### singleTop
+  - singleTop
 
-  这个是栈顶复用模式
-   在该配置下，如果在Activity栈，栈顶是该Activity，那么会走onNewIntent()->onResume()
-   如果不是，那么就走正常的生命周期
+    这个是栈顶复用模式
+    在该配置下，如果在Activity栈，栈顶是该Activity，那么会走onNewIntent()->onResume()
+    如果不是，那么就走正常的生命周期
 
-  ##### singleInstance
+  - singleInstance
 
-  这个是栈内复用模式
-   在该配置下，如果在该Activity栈，栈内存在该Activity(**没有要求是栈顶**)，那么会走onNewIntent()->onResume()，并且把位于该Activity上方的Activity全部出栈，使该Activity位于栈顶
+    这个是栈内复用模式
+    在该配置下，如果在该Activity栈，栈内存在该Activity(没有要求是栈顶)，那么会走onNewIntent()->onResume()，并且把位于该Activity上方的Activity全部出栈，使该Activity位于栈顶
 
-  ##### singleTask
+  - singleTask
 
-  这个配置下，Activity独享一个Activity栈。
+    这个配置下，Activity独享一个Activity栈。
 
   
 
 * Activity状态保存于恢复
 
-  onSaveInstanceState(Bundle state) 保存状态
-  onRestoreInstanceState(Bundle state) 恢复状态
+  - onSaveInstanceState(Bundle state) 保存状态
+  - onRestoreInstanceState(Bundle state) 恢复状态
 
   
 
 * fragment各种情况下的生命周期
 
-  ### 1、Fragment在[Activity](https://www.baidu.com/s?wd=Activity&tn=24004469_oem_dg&rsv_dl=gh_pl_sl_csd)中replace
+  - Fragment在[Activity](https://www.baidu.com/s?wd=Activity&tn=24004469_oem_dg&rsv_dl=gh_pl_sl_csd)中replace
+    - 新替换的Fragment：onAttach（） > onCreate（） > onCreateView （）> onViewCreated（） > onActivityCreated （）> onStart （）> onResume（）
+    - 被替换的Fragment：onPause（） > onStop（） > onDestroyView （）> onDestroy （）> onDetach（）
 
-  新替换的Fragment：onAttach（） > onCreate（） > onCreateView （）> onViewCreated（） > onActivityCreated （）> onStart （）> onResume（）
+  - Fragment在Activity中replace，并addToBackStack
+    - 新替换的Fragment（没有在BackStack中）：onAttach（） > onCreate（） > onCreateView（） > onViewCreated （）> onActivityCreated（） > onStart （）> onResume（）
+    - 新替换的Fragment（已经在BackStack中）：onCreateView（） > onViewCreated （）> onActivityCreated（） > onStart（） > onResume（）
+    - 被替换的Fragment：onPause（） > onStop（） > onDestroyView（）
 
-  被替换的Fragment：onPause（） > onStop（） > onDestroyView （）> onDestroy （）> onDetach（）
+  - Fragment进入了运行状态：
 
-  ### 2、Fragment在Activity中replace，并addToBackStack
+    Fragment在上述的各种情况下进入了onResume（）后，则进入了运行状态，以下4个生命周期方法将跟随所属的Activity一起被调用：onPause（） > onStop （）> onStart（） > onResume（）
 
-  新替换的Fragment（没有在BackStack中）：onAttach（） > onCreate（） > onCreateView（） > onViewCreated （）> onActivityCreated（） > onStart （）> onResume（）
+  - 关于Fragment的onActivityResult方法：
 
-  新替换的Fragment（已经在BackStack中）：onCreateView（） > onViewCreated （）> onActivityCreated（） > onStart（） > onResume（）
-
-  被替换的Fragment：onPause（） > onStop（） > onDestroyView（）
-
-  ### 3、Fragment进入了运行状态：
-
-  Fragment在上述的各种情况下进入了onResume（）后，则进入了运行状态，以下4个生命周期方法将跟随所属的Activity一起被调用：
-
-  onPause（） > onStop （）> onStart（） > onResume（）
-
-  关于Fragment的onActivityResult方法：
-
-  使用Fragment的startActivity（）方法时，FragmentActivity的onActivityResult（）方法会回调相应的Fragment的onActivityResult（）方法，所以在重写FragmentActivity的onActivityResult（）方法时，注意调super.onActivityResult（）。
+    使用Fragment的startActivity（）方法时，FragmentActivity的onActivityResult（）方法会回调相应的Fragment的onActivityResult（）方法，所以在重写FragmentActivity的onActivityResult（）方法时，注意调super.onActivityResult（）。
 
   
 
 * Fragment状态保存startActivityForResult是哪个类的方法，在什么情况下使用？
 
-  startActivityForResult是FragmentActivity的方法。
-   其实和Activity的startActivityForResult是一样的，只不过需要注意在Fragment里面调用的话，直接使用：
+  - startActivityForResult是FragmentActivity的方法。
 
-  ```
-  val targetIntent = Intent(this@MyFragment.context, DialogActivity::class.java)
-  startActivityForResult(targetIntent, 1)
-  ```
+  - 其实和Activity的startActivityForResult是一样的，只不过需要注意在Fragment里面调用的话，直接使用：
 
-  而不需要使用getActivity()/activity：
+    ```
+    val targetIntent = Intent(this@MyFragment.context, DialogActivity::class.java)
+    startActivityForResult(targetIntent, 1)
+    ```
 
-  ```
-  val targetIntent = Intent(this@MyFragment.context, DialogActivity::class.java)
-  activity.startActivityForResult(targetIntent, 1)
-  ```
+    而不需要使用getActivity()/activity：
+
+    ```
+    val targetIntent = Intent(this@MyFragment.context, DialogActivity::class.java)
+    activity.startActivityForResult(targetIntent, 1)
+    ```
 
   
 
 * 如何实现Fragment的滑动？
 
-  1. 把Fragment放到ViewPager里面去
+  - 把Fragment放到ViewPager里面去
+  - 把Fragment放到RecyclerView/ListView/GridView
 
-  2. 把Fragment放到RecyclerView/ListView/GridView
-
-     
+  
 
 * fragment之间传递数据的方式？
 
-  1. Intent传值
-  2. 广播传值
-  3. 静态调用
-  4. 本地化存储传值
-  5. 暴露接口/方法调用
-  6. eventBus等之类的
+  - Intent传值
+
+  - 广播传值
+
+  - 静态调用
+
+  - 本地化存储传值
+
+  - 暴露接口/方法调用
+
+  - eventBus等之类的
+
+    
 
 * Activity 怎么和Service 绑定？
 
-  ```
-  通过BindService绑定，具体步骤
-  ```
+  - 通过BindService绑定，具体步骤
 
-  1. 新建Activity, Service。Activity里面绑定Service。
-  2. Service新建绑定类继承Binder，具体代码如下：
+    - 新建Activity, Service。Activity里面绑定Service。
+
+    - Service新建绑定类继承Binder，具体代码如下：
       **Service** 
 
-  ```
-  public class MyService extends Service {
-      private IBinder iBinder=new MyBinder();
-      
-      @Nullable
-      @Override
-      public IBinder onBind(Intent intent) {
-          return iBinder;
-      }
-  
-      class MyBinder extends Binder {
-          public MyService get() {
-              return MyService.this;
-          }
-      }
-  }
-  ```
+        ```
+        public class MyService extends Service {
+            private IBinder iBinder=new MyBinder();
+            
+            @Nullable
+            @Override
+            public IBinder onBind(Intent intent) {
+                return iBinder;
+            }
+        
+            class MyBinder extends Binder {
+                public MyService get() {
+                    return MyService.this;
+                }
+            }
+        }
+        ```
 
-  **Activity**
+      **Activity**
 
-  ```
-  public class ServiceActivity extends AppCompatActivity {
-  
-      @Override
-      protected void onCreate(@Nullable Bundle savedInstanceState) {
-          super.onCreate(savedInstanceState);
-  
-          MyConnection myConnection = new MyConnection();
-          Intent intent = new Intent(this, MyService.class);
-          bindService(intent, myConnection, Service.BIND_AUTO_CREATE);
-      }
-  
-  
-      private class MyConnection implements ServiceConnection {
-          @Override
-          public void onServiceConnected(ComponentName name, IBinder service) {
-              MyService myService = ((MyService.MyBinder) service).get();
-              Log.e("lht", "onServiceConnected: " + myService.getPackageName());
-          }
-  
-          @Override
-          public void onServiceDisconnected(ComponentName name) {
-  
-          }
-  
-          @Override
-          public void onBindingDied(ComponentName name) {
-  
-          }
-      }
-  }
-  ```
+      ```
+        public class ServiceActivity extends AppCompatActivity {
+        
+            @Override
+            protected void onCreate(@Nullable Bundle savedInstanceState) {
+                super.onCreate(savedInstanceState);
+        
+                MyConnection myConnection = new MyConnection();
+                Intent intent = new Intent(this, MyService.class);
+                bindService(intent, myConnection, Service.BIND_AUTO_CREATE);
+            }
+        
+        
+            private class MyConnection implements ServiceConnection {
+                @Override
+                public void onServiceConnected(ComponentName name, IBinder service) {
+                    MyService myService = ((MyService.MyBinder) service).get();
+                    Log.e("lht", "onServiceConnected: " + myService.getPackageName());
+                }
+        
+                @Override
+                public void onServiceDisconnected(ComponentName name) {
+        
+                }
+        
+                @Override
+                public void onBindingDied(ComponentName name) {
+        
+                }
+            }
+        }
+      ```
 
   
 
 * 怎么在Activity 中启动自己对应的Service？
 
-  1. Activity通过bindService(Intent service, ServiceConnection  conn, int flags)跟Service进行绑定。同上。
+  Activity通过bindService(Intent service, ServiceConnection  conn, int flags)跟Service进行绑定。同上。
 
-     
+  
 
 * service和activity怎么进行数据交互？
 
-  1. Binder对象
+  - Binder对象
 
-  2. 广播
+  - 广播
 
-     
+    
 
 * [Service的开启方式](https://www.jianshu.com/p/4c798c91a613)
 
@@ -489,28 +457,28 @@
 
 * 请描述一下广播BroadcastReceiver的理解
 
-  1.是四大组件之一,主要用于接收app发送的广播
-  2.内部通信实现机制:通过android系统的Binder机制.
+  - 是四大组件之一,主要用于接收app发送的广播
+  - 2.内部通信实现机制:通过android系统的Binder机制.
 
   
 
 * 广播的分类
 
-  无序广播 
-  优点:完全异步,逻辑上可被任何接受者收到广播,效率高
-  缺点:接受者不能讲处理结果交给下一个接受者,且无法终止广播.
-  有序广播 
-  按被接收者的优先级循序传播
-  A>B>C,每个都有权终止广播,下一个就得不到
-  每一个都可进行修改操作,下一个就得到上一个修改后的结果.
+  - 无序广播
+    - 优点: 完全异步,逻辑上可被任何接受者收到广播,效率高
+    - 缺点: 接受者不能讲处理结果交给下一个接受者,且无法终止广播.
+
+  - 有序广播
+    - 按被接收者的优先级循序传播
+    - A>B>C,每个都有权终止广播,下一个就得不到
+    - 每一个都可进行修改操作,下一个就得到上一个修改后的结果.
 
   
 
 * 广播使用的方式和场景
 
-  开机启动,sd卡挂载,低电量,外拨电话,锁屏等
-
-  比如根据产品经理要求,设计播放音乐时,锁屏是否决定暂停音乐.
+  - 开机启动, sd卡挂载, 低电量, 外拨电话, 锁屏等
+  - 比如根据产品经理要求, 设计播放音乐时, 锁屏是否决定暂停音乐.
 
   
 
@@ -519,17 +487,18 @@
   在清单文件中注册广播接收者称为静态注册，在代码中注册称为动态注册。静态注册的广播接收者只要 app 在系
   统中运行则一直可以接收到广播消息，动态注册的广播接收者当注册的 Activity 或者 Service 销毁了那么就接收不到
   广播了。
-  静态注册：在清单文件中进行如下配置 
 
-  ```
-  `<receiver android:name=``".BroadcastReceiver1"` `>``　　<intent-filter>``　　　　<action android:name=``"android.intent.action.CALL"` `></action>``　　</intent-filter>``</receiver>`
-  ```
+  - 静态注册：在清单文件中进行如下配置 
 
-   动态注册：在代码中进行如下注册 
+    ```
+    `<receiver android:name=``".BroadcastReceiver1"` `>``　　<intent-filter>``　　　　<action android:name=``"android.intent.action.CALL"` `></action>``　　</intent-filter>``</receiver>`
+    ```
 
-  ```
-  `receiver = ``new` `BroadcastReceiver();``IntentFilter intentFilter = ``new` `IntentFilter();``intentFilter.addAction(CALL_ACTION);``context.registerReceiver(receiver, intentFilter);`
-  ```
+  - 动态注册：在代码中进行如下注册 
+
+    ```
+    `receiver = ``new` `BroadcastReceiver();``IntentFilter intentFilter = ``new` `IntentFilter();``intentFilter.addAction(CALL_ACTION);``context.registerReceiver(receiver, intentFilter);`
+    ```
 
   
 
@@ -537,50 +506,45 @@
 
 * BroadcastReceiver，LocalBroadcastReceiver 区别
 
-  1. 全局广播 BroadcastReceiver
+  - 全局广播 BroadcastReceiver
 
-     是针对应用间、应用与系统间、应用内部进行通信的一种方
+    是针对应用间、应用与系统间、应用内部进行通信的一种方
 
-  2. 本地广播LocalBroadcastReceiver
+  - 本地广播LocalBroadcastReceiver
 
-     仅在自己的应用内发送接收广播，也就是只有自己的应用能收到，数据更加安全广播只在这个程序里，而且效率更高。
+    仅在自己的应用内发送接收广播，也就是只有自己的应用能收到，数据更加安全广播只在这个程序里，而且效率更高。
 
   
 
 * AlertDialog,popupWindow,Activity区别
 
-  AlertDialog是非阻塞式对话框，当弹出来的时候，后台还是可以继续做事情的
-  popupWindow则是阻塞式的对话框
+  - AlertDialog是非阻塞式对话框，当弹出来的时候，后台还是可以继续做事情的
+  - popupWindow则是阻塞式的对话框
 
   
 
 * Application 和 Activity 的 Context 对象的区别
 
-  1. Application是全局的Context,可以用于需要长期持久的contenxt操作
+  - Application是全局的Context,可以用于需要长期持久的contenxt操作
+  - 而Activity的Context只是属于该Activity,如果被非法持有的话，很容易导致该Activity无法被回收，造成内存泄露
 
-  2. 而Activity的Context只是属于该Activity,如果被非法持有的话，很容易导致该Activity无法被回收，造成内存泄露
-
-     
+  
 
 * Android属性动画特性
 
-  1. 不仅限于对View进行操作（移动、缩放、旋转和淡入淡出），具备时间差值器
+  - 不仅限于对View进行操作（移动、缩放、旋转和淡入淡出），具备时间差值器
+  - 改变了View的属性，移动是真移动，而补间动画仅仅是改变了绘制相对位置，View的坐标位置属性并未改变，所以导致点击事件还是在原位置
 
-  2. 改变了View的属性，移动是真移动，而补间动画仅仅是改变了绘制相对位置，View的坐标位置属性并未改变，所以导致点击事件还是在原位置
-
-     
+  
 
 * 如何导入外部数据库?
 
-  1. 把外部建好的数据库文件放在raw中，
+  - 把外部建好的数据库文件放在raw中，
+  - 读入该数据库文件
+  - 写入到data/data/batabases文件夹中
+  - 正常读取
 
-  2. 读入该数据库文件
-
-  3. 写入到data/data/batabases文件夹中
-
-  4. 正常读取
-
-     
+  
 
 * LinearLayout、RelativeLayout、FrameLayout的特性及对比，并介绍使用场景。
 
@@ -623,13 +587,13 @@
 
 * 谈谈对接口与回调的理解
 
-  1. You call me i call you
+  - You call me i call you
 
-  2. 通信的桥梁
+  - 通信的桥梁
 
-  3. 解耦
+  - 解耦
 
-     
+  
 
 * 回调的原理
 
@@ -661,33 +625,33 @@
 
 * 序列化的作用，以及Android两种序列化的区别
 
-  1. Serializable接口
-      是一个空接口，为对象提供标准的序列化和反序列化操作。
-      其中有一个long类型的值为**serialVersionUID**，我们开发人员很少用到这个，但是官方推荐是最好可以声明这个属性，主要用于校验序列化和反序列化。
+  - Serializable接口
+    是一个空接口，为对象提供标准的序列化和反序列化操作。
+    其中有一个long类型的值为**serialVersionUID**，我们开发人员很少用到这个，但是官方推荐是最好可以声明这个属性，主要用于校验序列化和反序列化。
 
   > serialVersionUID的详细工作过程是这样的：序列化的时候系统会把当前类的serialVersionUID写入序列化的二进制文件中，当反序列化的时候系统会检测文件中的serialVersionUID是否和当前类的serialVersionUID一致，如果一致就说明序列化的类的版本和当前类的版本是相同的，这个时候可以成功反序列化；否则说明当前类和反序列化的类相比发生了某些变化，比如成员变量的数量、类型发生了变化，这个时候是无法正常反序列化的。
 
-  1. Parcelable接口
-      是androidSdk特意为序列化和反序列化开发出来的一个接口，相当于Serializable具有更好的效率。
-      但是Parcelable接口使用起来比较麻烦。具有如此的属性：
+  - Parcelable接口
+    是androidSdk特意为序列化和反序列化开发出来的一个接口，相当于Serializable具有更好的效率。
+    但是Parcelable接口使用起来比较麻烦。具有如此的属性：
 
-  | 方法                                | 功能                                                         | 标记位                        |
-  | ----------------------------------- | ------------------------------------------------------------ | ----------------------------- |
-  | createFromParcel(Parcel in)         | 从序列化后的对象中创建原始对象                               |                               |
-  | newArray(int size)                  | 创建指定长度的原始对象数组                                   |                               |
-  | User(Parcel in)                     | 从序列化后的对象中创建原始对象                               |                               |
-  | writeToParcel(Parcel out,int flags) | 将当前对象写入序列化结构中                                   | PARCALABLE_WRITE_RETURN_VALUE |
-  | describeContents                    | 返回当前对象的内容描述，几乎所有情况都返回0，仅在当前对象中存在文件描述符时返回1 | CONTENTS_FILE_DESCRIPTOR      |
+    | 方法                                | 功能                                                         | 标记位                        |
+    | ----------------------------------- | ------------------------------------------------------------ | ----------------------------- |
+    | createFromParcel(Parcel in)         | 从序列化后的对象中创建原始对象                               |                               |
+    | newArray(int size)                  | 创建指定长度的原始对象数组                                   |                               |
+    | User(Parcel in)                     | 从序列化后的对象中创建原始对象                               |                               |
+    | writeToParcel(Parcel out,int flags) | 将当前对象写入序列化结构中                                   | PARCALABLE_WRITE_RETURN_VALUE |
+    | describeContents                    | 返回当前对象的内容描述，几乎所有情况都返回0，仅在当前对象中存在文件描述符时返回1 | CONTENTS_FILE_DESCRIPTOR      |
 
-  1. 两者区别
+  - 两者区别
 
-  | 区别     | Serializable                          | Parcelable                              |
-  | -------- | ------------------------------------- | --------------------------------------- |
-  | 所属API  | JAVA API                              | Android SDK API                         |
-  | 原理     | 序列化和反序列化过程需要大量的I/O操作 | 序列化和反序列化过程不需要大量的I/O操作 |
-  | 开销     | 开销大                                | 开销小                                  |
-  | 效率     | 低                                    | 很高                                    |
-  | 使用场景 | 序列化到本地或者通过网络传输          | 内存序列化                              |
+    | 区别     | Serializable                          | Parcelable                              |
+    | -------- | ------------------------------------- | --------------------------------------- |
+    | 所属API  | JAVA API                              | Android SDK API                         |
+    | 原理     | 序列化和反序列化过程需要大量的I/O操作 | 序列化和反序列化过程不需要大量的I/O操作 |
+    | 开销     | 开销大                                | 开销小                                  |
+    | 效率     | 低                                    | 很高                                    |
+    | 使用场景 | 序列化到本地或者通过网络传输          | 内存序列化                              |
 
   
 
@@ -731,15 +695,15 @@
 
 * Android各个版本API的区别
 
-  1. android 5.0引入material design风格
+  - android 5.0引入material design风格
 
-  2. android 6.0引入权限动态管理
+  - android 6.0引入权限动态管理
 
-  3. android 7.0引入多窗口支持，传统网络状态监听静态广播失效等
+  - android 7.0引入多窗口支持，传统网络状态监听静态广播失效等
 
-  4. android 8.0引入画中画等
+  - android 8.0引入画中画等
 
-     
+  
 
 * Requestlayout，onlayout，onDraw，DrawChild区别与联系
 
@@ -998,11 +962,13 @@
 
   ![img](https:////upload-images.jianshu.io/upload_images/10844298-b70f98cd3d717c2c..jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp)
 
-  1. 数字1：启动Activity在这些类中是可以的，但是需要创建一个新的task。一般情况不推荐。
+  标注：
 
-  2. 数字2：在这些类中去layout inflate是合法的，但是会使用系统默认的主题样式，如果你自定义了某些样式可能不会被使用。
+  - 数字1：启动Activity在这些类中是可以的，但是需要创建一个新的task。一般情况不推荐。
 
-  3. 数字3：在receiver为null时允许，在4.2或以上的版本中，用于获取黏性广播的当前值。（可以无视）
+  - 数字2：在这些类中去layout inflate是合法的，但是会使用系统默认的主题样式，如果你自定义了某些样式可能不会被使用。
+
+  - 数字3：在receiver为null时允许，在4.2或以上的版本中，用于获取黏性广播的当前值。（可以无视）
 
   
 
@@ -1033,35 +999,35 @@
   - 进程重要级：前台（foreground）>可视（visible）>服务(service)>背景（background）>空（cache）
   - Application生命周期：
 
-  ```
-  public class App extends Application {
-  
-      @Override
-      public void onCreate() {
-          // 程序创建的时候执行
-          super.onCreate();
-      }
-      @Override
-      public void onTerminate() {
-          // 程序终止的时候执行
-          super.onTerminate();
-      }
-      @Override
-      public void onLowMemory() {
-          // 低内存的时候执行
-          super.onLowMemory();
-      }
-      @Override
-      public void onTrimMemory(int level) {
-          // 程序在内存清理的时候执行
-          super.onTrimMemory(level);
-      }
-      @Override
-      public void onConfigurationChanged(Configuration newConfig) {
-          super.onConfigurationChanged(newConfig);
-      }    
-  }
-  ```
+    ```
+    public class App extends Application {
+    
+        @Override
+        public void onCreate() {
+            // 程序创建的时候执行
+            super.onCreate();
+        }
+        @Override
+        public void onTerminate() {
+            // 程序终止的时候执行
+            super.onTerminate();
+        }
+        @Override
+        public void onLowMemory() {
+            // 低内存的时候执行
+            super.onLowMemory();
+        }
+        @Override
+        public void onTrimMemory(int level) {
+            // 程序在内存清理的时候执行
+            super.onTrimMemory(level);
+        }
+        @Override
+        public void onConfigurationChanged(Configuration newConfig) {
+            super.onConfigurationChanged(newConfig);
+        }    
+    }
+    ```
 
   
 
@@ -1088,10 +1054,10 @@
     - 一个线程有且只有一个Looper、Looper持有唯一MessageQueue消息队列
     - Handler构造函数需要Looper，若不指定Looper，生成Handler实例时：Looper.myLooper() 通过ThreadLocal<Looper>来实现线程内Looper唯一性。
     - Handler消息的post（message、runnable）会封装一个Message(target字段持有该handler对象)，Message入消息队列MessageQueue
-    - Looper循环遍历MessageQueue，取出msg，调用msg.handler.dispatchMessage()
-      - 若msg.runnable不为Null，调用msg.callback.run()。
+    - Looper循环遍历MessageQueue，取出msg，调用msg.handler.dispatchMessage(msg)
+      - 若msg.runnable不为Null，调用msg.runnable.run()。
       - 否则，若Handler构造方法中的代理Handler.Callback不为Null，方式执行mCallback.handleMessage(msg)。
-      - 否则，若msg.callback不为Null，执行handler.handleMessage(msg)
+      - 否则，执行handler.handleMessage(msg)
 
   
 
@@ -1299,14 +1265,13 @@
 
   - Exception:Only the original thread that created a view hierarchy can touch its views
 
-  ```
-      void checkThread() {
-          if (mThread != Thread.currentThread()) {
-              throw new CalledFromWrongThreadException(
-                      "Only the original thread that created a view hierarchy can touch its views.");
-          }
-      }
-  ```
+    ```
+    void checkThread() {
+        if (mThread != Thread.currentThread()) {
+           throw new CalledFromWrongThreadException("Only the original thread that created a view          hierarchy can touch its views.");
+        }
+    }
+    ```
 
   - 在Activity创建完成后（Activity的onResume之前ViewRootImpl实例没有建立），mThread被赋值为主线程（ViewRootImpl），所以直接在onCreate中创建子线程是可以更新UI的
 

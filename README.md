@@ -8,9 +8,10 @@
 ## Contents
 - [ ] [Java面试题](https://github.com/shanzi716liya/AndroidInterview/blob/master/Java/Java.md)
 - [ ] [Android面试题](https://github.com/shanzi716liya/AndroidInterview/blob/master/Android/Android.md)
-- [ ] 混合开发面试题
-- [ ] 高端技术面试题
-- [ ] 非技术性问题&HR问题汇总
+- [ ] [Android高级面试题](https://github.com/shanzi716liya/AndroidInterview/blob/master/Android-High/Android-High.md)
+- [ ] [算法面试题](https://github.com/shanzi716liya/AndroidInterview/blob/master/Algorithm/Algorithm.md)
+- [ ] [混合开发面试题](https://github.com/shanzi716liya/AndroidInterview/blob/master/Hybrid/Hybrid.md)
+- [ ] [非技术性问题&HR问题汇总](https://github.com/shanzi716liya/AndroidInterview/blob/master/HR/HR.md)
 
 
 ## Licence
