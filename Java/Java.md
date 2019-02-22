@@ -4,6 +4,22 @@
 
 > 熟练掌握java是很关键的，大公司不仅仅要求你会使用几个api，更多的是要你熟悉源码实现原理，甚至要你知道有哪些不足，怎么改进，还有一些java有关的一些算法，设计模式等等。
 
+
+* 一、数据类型
+* 二、String
+* 三、运算
+* 四、继承
+* 五、Object 通用方法
+* 六、关键字
+* 七、反射
+* 八、异常
+* 九、泛型
+* 十、注解
+* 十一、特性
+* Java 各版本的新特性
+* Java 与 C++ 的区别
+* JRE or JDK
+
 （一） java基础面试知识点
 
 - [java中==和equals和hashCode的区别](https://github.com/shanzi716liya/AndroidInterview/blob/master/Java/level-1/diff-equals-hashCode.md)
