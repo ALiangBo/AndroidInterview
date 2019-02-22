@@ -5,8 +5,8 @@
 > 熟练掌握java是很关键的，大公司不仅仅要求你会使用几个api，更多的是要你熟悉源码实现原理，甚至要你知道有哪些不足，怎么改进，还有一些java有关的一些算法，设计模式等等。
 
 
-* 一、数据类型
-* 二、String
+* 一、基本数据类型
+* 二、[String相关面试题](https://github.com/shanzi716liya/AndroidInterview/blob/master/Java/string/String%20%E7%9B%B8%E5%85%B3%E9%9D%A2%E8%AF%95%E9%A2%98.md)
 * 三、运算
 * 四、继承
 * 五、Object 通用方法

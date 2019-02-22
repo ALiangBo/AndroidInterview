@@ -77,3 +77,6 @@ System.out.println(s5 == s6);  // true
 
 在 Java 7 之前，String Pool 被放在运行时常量池中，它属于永久代。而在 Java 7，String Pool 被移到堆中。这是因为永久代的空间有限，在大量使用字符串的场景下会导致 OutOfMemoryError 错误。
 
+[深入理解String pool](https://github.com/shanzi716liya/AndroidInterview/blob/master/Java/string/%E5%85%B3%E4%BA%8EString%20pool.md)
+
+[深入解析String#intern](https://tech.meituan.com/2014/03/06/in-depth-understanding-string-intern.html)
