@@ -1614,6 +1614,10 @@
 
   - 懒加载
 
+    - Fragment创建lazyLoad方法
+
+    - Fragment#setUserVisibleHint时，getUserVisibleHint()二次判断当前Fragment是否显示？若显示调用lazyLoad方法且仅调用一次
+
     
 
 * 点击事件被拦截，但是想传到下面的View，如何操作？
