@@ -20,7 +20,7 @@
     - APP内：界面间通信，例如退出app，可以发送自杀广播
     - APP间：可以收到第三方发出的广播，进而进行对应的响应操作。
 
-  
+<br/><br/>
 
 * 四大组件的生命周期和简单用法
 
@@ -199,35 +199,41 @@
 
 * 横竖屏切换的时候，Activity 各种情况下的生命周期
 
-  - 不做任何配置，生命周期重新走一遍：完整流程为：onCreate()->onStart()->onResume()->onPause()->onSaveInstanceState()->onStop()->Ondestory()->onCreate()->onStart()->onRestoreInstanceState()->onResume()。
-  - 做配置：**android:configChanges="orientation|screenSize"**
+  - 不做任何配置，生命周期重新走一遍：完整流程为：onCreate() -> onStart() -> onResume() -> onPause()
+
+    -> onSaveInstanceState() -> onStop() -> onDestory() -> onCreate() -> onStart() -> onRestoreInstanceState()
+
+    -> onResume()。
+
+  - 做配置：*android:configChanges="orientation|screenSize"*
     横竖屏不走其他生命周期
+
   - 其中onSaveInstanceState()可以保存用户数据，对应的onRestoreInstanceState()可以读取之前保存的用户数据
 
   
 
 * Activity与Fragment之间生命周期比较
 
-  - activity有7个生命周期，fragment有十一个生命周期
+  - Activity有7个生命周期，Fragment有十一个生命周期
 
-  - fragment以及activity生命周期
+  - Fragment以及Activity生命周期
 
     其中他们的关系是：
 
     - 创建的时候：*Activity* 带动 *Fragment* 走生命周期，表格关系为：
 
-    | 所属     | Activity | Fragment                                         |
-    | -------- | -------- | ------------------------------------------------ |
-    | 创建操作 | onCreate | onAttach/onCreate/onCreateView/onActivityCreated |
-    | 创建操作 | onStart  | onStart()                                        |
+      | 所属     | Activity | Fragment                                         |
+      | -------- | -------- | ------------------------------------------------ |
+      | 创建操作 | onCreate | onAttach/onCreate/onCreateView/onActivityCreated |
+      | 创建操作 | onStart  | onStart()                                        |
 
     - 销毁的时候：*Fragment* 带动 *Activity* 走生命周期，表格关系为：
 
-    | 所属     | Fragment                               | Activity    |
-    | -------- | -------------------------------------- | ----------- |
-    | 创建操作 | onPause()                              | onPause()   |
-    | 创建操作 | onStop()                               | onStop()    |
-    | 创建操作 | onDestroyView()/onDestroy()/onDetach() | onDestroy() |
+      | 所属     | Fragment                               | Activity    |
+      | -------- | -------------------------------------- | ----------- |
+      | 创建操作 | onPause()                              | onPause()   |
+      | 创建操作 | onStop()                               | onStop()    |
+      | 创建操作 | onDestroyView()/onDestroy()/onDetach() | onDestroy() |
 
   
 
@@ -260,23 +266,23 @@
 
 * Activity的四种启动模式对比
 
-  - standard
+  - Standard
 
     这个是Activity的默认启动方式，我们不需要额外的配置
     在该配置下，启动一个Activity就会在该应用的Activity栈中压入一个Activity,返回的时候就直接把该Activity弹出栈。
 
-  - singleTop
+  - SingleTop
 
     这个是栈顶复用模式
     在该配置下，如果在Activity栈，栈顶是该Activity，那么会走onNewIntent()->onResume()
     如果不是，那么就走正常的生命周期
 
-  - singleInstance
+  - SingleInstance
 
     这个是栈内复用模式
     在该配置下，如果在该Activity栈，栈内存在该Activity(没有要求是栈顶)，那么会走onNewIntent()->onResume()，并且把位于该Activity上方的Activity全部出栈，使该Activity位于栈顶
 
-  - singleTask
+  - SingleTask
 
     这个配置下，Activity独享一个Activity栈。
 
@@ -337,7 +343,7 @@
 
   
 
-* fragment之间传递数据的方式？
+* Fragment之间传递数据的方式？
 
   - Intent传值
 
@@ -349,7 +355,7 @@
 
   - 暴露接口/方法调用
 
-  - eventBus等之类的
+  - EventBus等之类的
 
     
 
@@ -423,7 +429,7 @@
 
   
 
-* service和activity怎么进行数据交互？
+* Service和Activity怎么进行数据交互？
 
   - Binder对象
 
@@ -460,7 +466,7 @@
 * 请描述一下广播BroadcastReceiver的理解
 
   - 是四大组件之一,主要用于接收app发送的广播
-  - 2.内部通信实现机制:通过android系统的Binder机制.
+  - 内部通信实现机制:通过android系统的Binder机制.
 
   
 
@@ -545,9 +551,6 @@
 
   输入为差值器当前瞬间值，自定义map转换，输出目标值，类似二次差值器
 
-* 为什么补间动画没有改变view的属性，只是改变了绘制的相对位置？
-  
-
 * 如何导入外部数据库?
 
   - 把外部建好的数据库文件放在raw中，
@@ -616,7 +619,7 @@
 
   
 
-* 介绍下SurfView
+* 介绍下SurfaceView
 
   - View适用于主动更新的情况，而SurfaceView则适用于被动更新的情况，比如频繁刷新界面。
 
@@ -676,19 +679,22 @@
 
 （二）Android源码相关分析
 
+* 源码分析：为什么补间动画没有改变view的属性，只是改变了绘制的相对位置？
+
 * Android动画框架实现原理
 
   - 补间动画
-    1. 窗口中的所有 View 是共用一个 Canvas 对象
-    2. ViewGroup中，dispatchDraw->drawChild->child.draw(canvas)保证从顶至下，每一个View都绘制到
-    3. 需要绘制的 View 的绘制位置是在 Canvas 通过 translate 函数调用来进行切换的，即正常无动画情形下，每个View的绘制原点(x, y)为相对父ViewGroup中的布局坐标
-    4. ViewGroup dispatchDraw时，检测子View当前是否有动画，若有，取当前动画瞬间值，通过 translate 函数调用来进行切换改变子View的绘制原点，随时间偏移，即动画效果。
+
+    - 窗口中的所有View共用一个Canvas对象。
+    - ViewGroup中，dispatchDraw -> drawChild -> child.draw(canvas)保证从顶至下，每一个View都绘制到。
+    - 需要绘制的View的绘制位置是在Canvas通过translate函数调用来进行切换的，即正常无动画情形下，每个View的绘制原点(x, y)为相对父ViewGroup中的布局坐标。
+    - ViewGroup dispatchDraw时，检测子View当前是否有动画，若有，取当前动画瞬间值，通过 translate函数调用来进行切换改变子View的绘制原点，随时间偏移，即动画效果。
 
   - Gif动画
 
-    它的实现是通过 Movie 这个类来对 Gif 文件进行读取和解码的，同时在 onDraw 函数中不断的绘制每一帧图片完成的，这个示例代码在 onDraw 中调用 invalidate 来反复让 View 失效来让系统不断调用 SampleView 的 onDraw 函数；至于选出哪一帧图片进行绘制则是传入系统当前时间给 Movie 类，然后让它根据时间顺序来选出帧图片。反复让 View 失效的方式比较耗资源，绘制效果允许的话可以采取延时让 View 失效的方式来减小 CPU 消耗。
+    它的实现是通过Movie这个类来对Gif文件进行读取和解码的，同时在onDraw函数中不断的绘制每一帧图片完成的，这个示例代码在onDraw中调用invalidate来反复让View失效来让系统不断调用SampleView的onDraw函数；至于选出哪一帧图片进行绘制则是传入系统当前时间给Movie类，然后让它根据时间顺序来选出帧图片。反复让 View 失效的方式比较耗资源，绘制效果允许的话可以采取延时让View失效的方式来减小CPU消耗。
 
-    目前使用这个方式播放一些 Gif 格式的动画时会出现花屏的现象，这是因为 Android 中使用的 libgif 库是比较老的版本，新的 tag 不支持，所以导致花屏，解决办法有制作 Gif 图片时别使用太新的 tag 或完善 android 中对应的 libgif 库。
+    目前使用这个方式播放一些Gif格式的动画时会出现花屏的现象，这是因为Android中使用的libgif库是比较老的版本，新的tag不支持，所以导致花屏，解决办法有制作Gif图片时别使用太新的tag或完善android中对应的libgif 库。
 
     
 
@@ -731,20 +737,19 @@
 
   
 
-* Activity-Window-View三者的差别
+* Activity - Window - View三者的差别
 
   - 通用比喻：Acitivty像一个工匠（控制单元），Window像窗户（承载模式）,View像窗花（显示视图），LayoutInflater像剪刀，xml配置像窗花图纸
-
-  - 三者关系 
-    1. 在Activity中调用attach，创建了一个Window
-    2. 创建的window是其子类PhoneWindow，在attach中创建PhoneWindow
-    3. 在Activity中调用setContentView(R.layout.xxx)实际上是调用的getWindow().setContentView()
-    4. 调用PhoneWindow中的setContentView方法
-    5. 创建ParentView：作为ViewGroup的子类，实际是创建的DecorView(作为FramLayout的子类）
-    6. 将制定的R.layout.xxxx进行填充，通过布局填充器进行填充（其中的parent就是DecorView）
-    7. 调用到ViewGroup
-    8. 调用ViewGroup的removeAllView()，先将所有View移除，
-    9. 添加新的View: addView()
+  - 三者关系
+    - 在Activity中调用attach，创建了一个Window
+    - 创建的window是其子类PhoneWindow，在attach中创建PhoneWindow
+    - 在Activity中调用setContentView(R.layout.xxx)实际上是调用的getWindow().setContentView()
+    - 调用PhoneWindow中的setContentView方法
+    - 创建ParentView：作为ViewGroup的子类，实际是创建的DecorView(作为FramLayout的子类）
+    - 将制定的R.layout.xxxx进行填充，通过布局填充器进行填充（其中的parent就是DecorView）
+    - 调用到ViewGroup
+    - 调用ViewGroup的removeAllView()，先将所有View移除
+    - 添加新的View: addView()
 
   
 
@@ -833,7 +838,7 @@
 
   
 
-* looper架构
+* Looper架构
 
   封装消息循环和消息队列的一个类
 
@@ -940,7 +945,7 @@
   - IntentService继承Service，专门处理异步请求。
   - 客户端通过调用startService(Intent)发起请求，自然数据是通过Intent进行传递的。
   - 一旦Service启动后，对于Intent所传递的数据操作都通过工作线程（worker thread）进行处理。
-  - 在完成数据的处理之后，Handler会回调其处理结果。在任务结束后会将自身服务关闭。
+  - 在完成数据的处理之后，Handler handleMessage(msg) -> onHandleIntent会回调其处理结果（worker thread）。在任务结束后会将自身服务关闭stopSelf(msg.arg1)。
 
   通过Handler、Message、Looper在Service中实现的异步线程消息处理的机制。但是由于是通过衍生Service的方式实现的，因此具有Service的生命周期特性。
 
@@ -1143,6 +1148,16 @@
 
   
 
+* 主线程的Handler和Looper为什么不会阻塞卡死
+
+  - Epoll模型
+    当没有消息的时候会epoll.wait，等待句柄写的时候再唤醒，这个时候其实是阻塞的。
+
+  - 所有的UI操作都通过Handler来发消息操作。
+    比如屏幕刷新16ms一个消息，你的各种点击事件，所以就会有句柄写操作，唤醒上文的wait操作，所以不会被卡死了。
+
+    
+
 * ThreadLocal原理，实现及如何保证Local属性？
 
   - ThreadLocal并不是一个Thread，而是Thread的局部变量，也许把它命名ThreadLocalVariable更容易让人理解一些。
@@ -1158,11 +1173,10 @@
 
   在开发Android 应用时必须遵守单线程模型的原则：
 
-  1. 不要阻塞UI线程
+  - 不要阻塞UI线程
+  - 确保只在UI线程中访问Android UI工具包
 
-  2. 确保只在UI线程中访问Android UI工具包
-
-     
+  
 
 * 请描述一下View事件传递分发机制
 
@@ -1280,83 +1294,332 @@
     Android 的单线程模型，因为如果支持多线程修改 View 的话，由此产生的线程同步和线程安全问题将是非常繁琐的，所以 Android 直接就定死了，View 的操作必须在创建它的 UI 线程，从而简化了系统设计。
     有没有可以在其他非原始线程更新 ui 的情况呢？有，SurfaceView 就可以在其他线程更新。
     
-    
+
 * ViewRootImpl实例是在什么时候创建的，checkThread()被调用的具体时机
 
+  - ActivityThread.handleMessage()方法是用来处理系统的各种事件，包括 Activity 的生命周期，case RESUME_ACTIVITY: handleResumeActivity()，WindowManager#addView被调用的时候会通过WindowManagerImpl#addView通过桥接的设计模式用WindowManagerGlobal#addView创建ViewRootImpl实例。同时，mDecor会作为构造函数的参数被ViewRootImpl依赖。
+  - 在View更新的一些关键操作中都会调用，如layout，invalid，focus等。
+  - 在 Activity 的 onResume 生命周期之前的方法，直接在子线程操作 UI 并不会报错，原因就在于 ViewRootImpl 是在 onResume 事件发生时才创建的，由于系统是在 ViewRootImpl 的 checkThread 中做判断的，所有 ViewRootImpl 没有创建之前对 UI 的操作，系统无从判断，也就不能抛出不能在主线程操作 UI 的错误信息了
 
-* 为什么在oncreate的时候获得view的宽高为0？
+
+* 为什么在onCreate的时候获得View的宽高为0？
+
+  - Activity的生命周期与View的measure不是同步运行，因此在onCreate/onStart/onResume均无法正确得到
+
+  - performTraversals方法实际上是被加入到消息队列中去执行的
+
+    
 
 * 为什么能用view.post(Runnable)去获取view的宽高？
+
+  performTraversals方法实际上也是被加入到消息队列中去执行的，而我们最初post的Runnable，是在performTraversals方法中将其附加到一个消息上并加入到消息队列里。所以，我们post的Runnable的消息，肯定是在performTraversals的消息之后执行的，也就是我们post的Runnable肯定是在performTraversals之后执行，而performTraversals之后，View的宽和高便计算出来了
 
   
 
 * ANR产生的原因是什么？
 
+  - 当前的事件没有机会得到处理，例如UI线程正在响应另一个事件，当前事件由于某种原因被阻塞了。
+
+  - 当前的事件正在处理，但是由于耗时太长没能及时完成
+
+  - 点击事件或者触摸事件在特定的时间（5s）内无法得到响应
+
+  - BroadcastReceiver的onReceive()函数运行在主线程中，在特定的时间（10s）内无法完成处理
+
+  - Service的各个生命周期函数在特定时间（20s）内无法完成处理
+
+    
+
 * ANR定位和修正
 
-* oom是什么？
+  - 定位
 
-* 什么情况导致oom？
+    - 当发生ANR时，可以通过结合Logcat日志和生成的位于手机内部存储的/data/anr/traces.tex文件进行分析和定位。
+
+  - 修正
+
+    - StrictMode
+
+    - BlockCanary
+
+      
+
+* OOM是什么？
+
+  App要求被分配的内存超出了虚拟机能允许给的内存，虚拟机抛出OOM错误。
+
+  
+
+* 什么情况导致OOM？
+
+  - 加载对象过大
+
+  - 相应资源过多，来不及加载
+
+    
 
 * 有什么解决方法可以避免OOM？
 
-* Oom 是否可以try catch？为什么？
+  - 内存优化
+
+    - 软引用
+
+    - 优化数据结构，共享内存
+
+  - 内存中加载图片直接在内存中做处理（如边界压缩）这个Glide\Fresco 图片框架可能封装好了
+
+    - 图片导入前的压缩
+    - 图片运行时压缩inSampleSize: 缩放比例，decode format:解码格式
+
+  - 动态回收内存
+
+    - 无用内存置为Null，等待内存回收
+    - system.gc()
+
+  - 优化Delivk虚拟机的堆内存分配
+
+  - 自定义堆内存大小
+
+  
+
+* OOM 是否可以try catch？为什么？
+
+  try catch 是可以解决oom后出现的崩溃，然后采取补救的措施，例如缩小图片，减少内存占用。但是这并不是解决oom的根本方法，要解决oom还必须知道oom的出现原因，来提前做出应对措施。
+
+  
 
 * 内存泄漏是什么？
 
+  指由于疏忽或错误造成程序未能释放已经不再使用的内存的情况。内存泄漏并非指存在物理上的消失，而是应用程序分配某段内存后，由于设计错误，失去了对该段内存的控制，因而造成了内存的浪费
+
+  
+
 * 什么情况导致内存泄漏？
+
+  - 静态引用
+
+    - Static Activities
+    - Static Views
+    - Inner Classes
+
+  - 内部类持有Activity引用
+
+    - Anonymous Classes
+    - Handler
+    - Threads
+    - TimerTask
+
+  - Activity被Manager addListener队列管理
+
+    - Sensor Manager
+
+      
 
 * 如何防止线程的内存泄漏？
 
+  - 静态内部类：切断内部类Thread对于Activity的隐式强引用
+
+  - 弱引用： 切断Thread对于Activity的强引用
+
+    
+
 * 内存泄露场的解决方法
+
+  - 静态内部类
+
+  - 弱引用
+
+  - 注销监听
+
+    
 
 * 内存泄漏和内存溢出区别？
 
+  - 内存泄露Memory Leak：指由于疏忽或错误造成程序未能释放已经不再使用的内存的情况。内存泄漏并非指存在物理上的消失，而是应用程序分配某段内存后，由于设计错误，失去了对该段内存的控制，因而造成了内存的浪费
+
+  - 内存溢出Out of Memory：App要求被分配的内存超出了虚拟机能允许给的内存，虚拟机抛出OOM错误
+
+  - Memory Leak会最终会导致Out of Memory
+
+    
+
 * LruCache默认缓存大小
+
+  无默认大小，必须显式指定大小
+
+  
 
 * ContentProvider的权限管理(解答：读写分离，权限控制-精确到表级，URL控制)
 
 * 如何通过广播拦截和abort一条短信？
 
+  - 注册BroadcastReceiver.onReceive -> abortBroadcast()
+
+    
+
 * 广播是否可以请求网络？
 
-* 广播引起anr的时间限制是多少？
+  从4.0 开始所有的网络请求都需要在线程中，广播请求网络同理 开启线程在线程中请求网络
 
-* 计算一个view的嵌套层级
+  
+
+* 广播引起ANR的时间限制是多少？
+
+  10s
+
+  
+
+* 计算一个View的嵌套层级
+
+  ```
+  public static int getDeep(@NonNull View view) {
+      int count = 0;
+      ViewParent parent = view.getParent();
+      while (parent != null) {
+          count++;
+          parent = view.getParent();
+      }
+      return count;
+  }
+  ```
 
 * Activity栈
 
 * Android线程有没有上限？
 
+  没有上限的，因为资源都限制在这个进程里，你开多少线程都最多用这些资源。至于开多少最好，完全取决你的需求，合理开线程，不卡，高效是最终目标。
+
+  
+
 * 线程池有没有上限？
+
+  没有上限
+
+  
 
 * ListView重用的是什么？
 
+  移出屏幕的mScrapViews，复用
+
+  
+
 * Android为什么引入Parcelable？
+
+  - Parcelable接口
+    Interface for classes whose instances can be written to and restored from a Parcel。 Classes implementing the Parcelable interface must also have a static field called CREATOR， which is an object implementing theParcelable.Creator interface。
+  - 实现Parcelable就是为了进行序列化，那么，为什么要序列化？
+    - 永久性保存对象，保存对象的字节序列到本地文件中；
+    - 通过序列化对象在网络中传递对象；
+    - 通过序列化在进程间传递对象。
+
+  - 效率
+
+    Serializable 和 Parcelable两者最大的区别在于 存储媒介的不同，Serializable 使用 I/O 读写存储在硬盘上，而 Parcelable 是直接 在内存中读写。很明显，内存的读写速度通常大于 IO 读写，所以在 Android 中传递数据优先选择 Parcelable。Serializable 会使用反射，序列化和反序列化过程需要大量 I/O 操作， Parcelable 自已实现封送和解封（marshalled &unmarshalled）操作不需要用反射，数据也存放在 Native 内存中，效率要快很多
+
+    
 
 * 有没有尝试简化Parcelable的使用？
 
+  - AS IDE插件：android parcelable code generator
+  - 注解库：@Parcelize（Kotlin）
+
 （四）开发中常见的一些问题
 
-* ListView 中图片错位的问题是如何产生的?
-* 混合开发有了解吗？
-* 知道哪些混合开发的方式？说出它们的优缺点和各自使用场景？（解答：比如:RN，weex，H5，小程序，WPA等。做Android的了解一些前端js等还是很有好处的)；
-* 屏幕适配的处理技巧都有哪些?
-* 服务器只提供数据接收接口，在多线程或多进程条件下，如何保证数据的有序到达？
-* 动态布局的理解
-* 怎么去除重复代码？
-* 画出 Android 的大体架构图
-* Recycleview和ListView的区别
+* ListView中图片错位的问题是如何产生的?
+
 * ListView图片加载错乱的原理和解决方案
+
+  - Item复用，且网络图片请求没有绑定tag导致
+
+    - 网络加载图片，绑定ImageView1（Item1）
+    - 滑动，Item1移出屏幕，被位置11复用
+    - 网络返回图片，加载至ImageView1，期望加载到Item1位置，实际加载到Item11，发生图片错位
+
+  - 解决方案：设置tag
+
+    
+
+* 混合开发有了解吗？
+
+* 知道哪些混合开发的方式？说出它们的优缺点和各自使用场景？（解答：比如:RN，weex，H5，小程序，WPA等。做Android的了解一些前端js等还是很有好处的)；
+
+  
+
+* 屏幕适配的处理技巧都有哪些?
+
+  - 多套尺寸（480p、720p、1080p等）
+
+  - weight属性
+
+  - 百分比布局、约束布局等
+
+  - 代码动态改变
+
+    
+
+* 服务器只提供数据接收接口，在多线程或多进程条件下，如何保证数据的有序到达？
+
+* 动态布局的理解
+
+* 怎么去除重复代码？
+
+  - IDE ctrl + alt + m方法块封装
+
+  - 类封装
+
+  - 公共方法，类抽离复用
+
+  - 基类
+
+    
+
+* 画出 Android 的大体架构图
+
+* RecycleView和ListView的区别
+
+  - RecycleView内部实现复用，ListView需要自己实现
+
+  - ListView可以设置HeaderView和FooterView
+
+  - RecycleView
+
+    - 线性、网格、瀑布流布局
+    - 嵌套滑动
+    - 局部刷新
+    - Item动画效果
+
+    
+
 * 动态权限适配方案，权限组的概念
+
 * Android系统为什么会设计ContentProvider？
+
 * 下拉状态栏是不是影响activity的生命周期
+
 * 如果在onStop的时候做了网络请求，onResume的时候怎么恢复？
-* Bitmap 使用时候注意什么？
+
+  - onResume重新请求
+
+  - 如果后台销毁，onSaveInstanceState保存，onRestoreInstanceState恢复
+
+    
+
+* Bitmap使用时候注意什么？
+
 * Bitmap的recycler()
+
 * Android中开启摄像头的主要步骤
+
 * ViewPager使用细节，如何设置成每次只初始化当前的Fragment，其他的不初始化？
+
+  - 懒加载
+
+    
+
 * 点击事件被拦截，但是想传到下面的View，如何操作？
+
 * 微信主页面的实现方式
+
 * 微信上消息小红点的原理
+
 * CAS介绍（这是阿里巴巴的面试题，我不是很了解，可以参考博客: CAS简介）

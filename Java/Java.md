@@ -230,11 +230,11 @@
 
 - Java中对象的生命周期
 
-- Synchronized用法
+- synchronized用法
 
-- synchronize的原理
+- synchronized的原理
 
-- 谈谈对Synchronized关键字，类锁，方法锁，重入锁的理解
+- 谈谈对synchronized关键字，类锁，方法锁，重入锁的理解
 
 - static synchronized 方法的多线程访问和作用
 
@@ -250,13 +250,15 @@
 
 - synchronized 和volatile 关键字的区别
 
-- synchronized与Lock的区别
+- synchronized 与Lock的区别
 
-- ReentrantLock 、synchronized和volatile比较
+- synchronized 和Lock真正锁的是什么
+
+- ReentrantLock 、synchronized 和volatile比较
 
 - ReentrantLock的内部实现
 
-- lock原理
+- Lock原理
 
 - 死锁的四个必要条件？
 
@@ -269,6 +271,10 @@
 - Java的并发、多线程、线程模型
 
 - 谈谈对多线程的理解
+
+- 可见性，原子性，有序性的理解
+
+- synchronized保证了什么特性，volatile保证了什么特性
 
 - 多线程有什么要注意的问题？
 
