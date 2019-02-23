@@ -1045,7 +1045,13 @@
 
   
 
-* RecycleView原理
+* RecyclerView原理
+
+  [RecyclerView 剖析](https://link.jianshu.com/?t=http%3A%2F%2Fwww.jcodecraeer.com%2Fa%2Fanzhuokaifa%2Fandroidkaifa%2F2016%2F0630%2F4400.html)
+
+  [RecyclerView 剖析 下](https://link.jianshu.com/?t=http%3A%2F%2Fwww.jcodecraeer.com%2Fa%2Fanzhuokaifa%2Fandroidkaifa%2F2016%2F0701%2F4401.html)
+
+  
 
 * AndroidManifest的作用与理解
 

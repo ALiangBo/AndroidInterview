@@ -576,49 +576,269 @@
 
 - 开启线程的三种方式？
 
+  - 继承Thread类创建线程类
+
+    ```
+    public class MyThread extends Thread {
+        @Override
+        public void run() {
+            super.run();
+        }
+    }
+    
+    new MyThread().start();
+    ```
+
+  - 通过Runnable接口创建线程类
+
+    ```
+    new Thread(new Runnable() {
+        @Override
+        public void run() { }
+    }).start();
+    ```
+
+  - 通过Callable和Future创建线程
+
+    ```
+    new Thread(new FutureTask<String>(new Callable<String>() {
+        @Override
+        public String call() throws Exception { }
+    })).start();
+    ```
+
+    
+
 - 线程和进程的区别？
+
+  参上
+
+  
 
 - 为什么要有线程，而不是仅仅用进程？
 
-  进程切换的开销要大，而线程切换的开销较小。
+  - 系统多个进程，等同多个应用，进程间异步；如果一个应用一个进程，应用会是单线程应用
+
+  - 线程可认为是进程的细化版本
+
+  - 进程切换的开销要大，而线程切换的开销较小。
+
+    
 
 - run()和start()方法区别
 
+  - run()是直接调用线程对象的run()方法，同步
+
+  - start()是开启一个新的线程，异步
+
+    
+
 - 如何控制某个方法允许并发访问线程的个数？
 
-- 在Java中wait和seelp方法的不同；
+  - 想控制允许访问线程的个数就要使用到Semaphore。
+  - Semaphore有两个方法semaphore.acquire() 和semaphore.release()。
+    - semaphore.acquire() ：请求一个信号量，这时候的信号量个数-1（一旦没有可使用的信号量，也即信号量个数变为负数时，再次请求的时候就会阻塞，直到其他线程释放了信号量）。
+    - semaphore.release() 释放一个信号量，此时信号量个数+1。
+
+  
+
+- 在Java中wait和sleep方法的不同；
+
+  - wait只能在同步（synchronize）环境中被调用，而sleep不需要。
+
+  - 进入wait状态的线程能够被notify和notifyAll线程唤醒，但是进入sleeping状态的线程不能被notify方法唤醒。
+
+  - wait通常有条件地执行，线程会一直处于wait状态，直到某个条件变为真。但是sleep仅仅让你的线程进入睡眠状态。
+
+  - wait方法在进入wait状态的时候会释放对象的锁，但是sleep方法不会。
+
+  - wait方法是针对一个被同步代码块加锁的对象，而sleep是针对一个线程。
+
+    
 
 - 谈谈wait/notify关键字的理解
 
+  - wait()方法可以使处于临界区内的线程进入等待状态，同时释放被同步对象的锁
+
+  - notify()方法可以唤醒一个因调用wait操作而处于阻塞状态中的线程，使其进入就绪状态。被重新唤醒的线程会视图重新获得临界区的控制权也就是锁，并继续执行wait方法之后的代码。如果发出notify操作时没有处于阻塞状态中的线程，那么该命令会被忽略
+
+    
+
 - 什么导致线程阻塞？
 
-  io操作和计算型任务
+  - 线程睡眠：Thread.sleep (long millis)方法，使线程转到阻塞状态。millis参数设定睡眠的时间，以毫秒为单位。当睡眠结束后，就转为就绪（Runnable）状态。sleep()平台移植性好。
+
+  - 线程等待：Object类中的wait()方法，导致当前的线程等待，直到其他线程调用此对象的 notify() 唤醒方法。这个两个唤醒方法也是Object类中的方法，行为等价于调用 wait() 一样。wait() 和 notify() 方法：两个方法配套使用，wait() 使得线程进入阻塞状态，它有两种形式，一种允许 指定以毫秒为单位的一段时间作为参数，另一种没有参数，前者当对应的 notify() 被调用或者超出指定时间时线程重新进入可执行状态，后者则必须对应的 notify() 被调用.
+
+  - 线程礼让，Thread.yield() 方法，暂停当前正在执行的线程对象，把执行机会让给相同或者更高优先级的线程。yield() 使得线程放弃当前分得的 CPU 时间，但是不使线程阻塞，即线程仍处于可执行状态，随时可能再次分得 CPU 时间。调用 yield() 的效果等价于调度程序认为该线程已执行了足够的时间从而转到另一个线程.
+
+  - 线程自闭，join()方法，等待其他线程终止。在当前线程中调用另一个线程的join()方法，则当前线程转入阻塞状态，直到另一个进程运行结束，当前线程再由阻塞转为就绪状态。
+
+  - suspend() 和 resume() 方法：两个方法配套使用，suspend()使得线程进入阻塞状态，并且不会自动恢复，必须其对应的resume() 被调用，才能使得线程重新进入可执行状态。典型地，suspend() 和 resume() 被用在等待另一个线程产生的结果的情形：测试发现结果还没有产生后，让线程阻塞，另一个线程产生了结果后，调用 resume() 使其恢复。Thread中suspend()和resume()两个方法在JDK1.5中已经废除，不再介绍。因为有死锁倾向。
+
+    
 
 - 线程如何关闭？
 
-- 讲一下java中的同步的方法
+  - 线程正常执行完毕，正常结束
+  - 中断标志位方式（interrupt、自定义标志位）终止线程
+    - interrupt()中断
+    - while循环检查isInterrupted()，若为true退出循环，线程结束
+
+  
 
 - 数据一致性如何保证？
 
+  加锁、原子性、事务
+
+  
+
 - 如何保证线程安全？
+
+  - 不使用多线程
+
+  - 不可变量
+
+  - 加锁同步机制
+
+    
 
 - 如何实现线程同步？
 
+- 讲一下java中的同步的方法
+
+  - 使用synchronized关键字
+
+    Java中的每个对象都有一个monitor对象，当使用synchronized关键字来同步一段代码时，java提供monitorenter和monitorexit两个字节码指令来支持同步操作，
+
+    - monitorenter
+
+      每一个对象都关联一个monitor对象，线程执行monitorenter时获取该对象所关联的monitor的拥有权。如果另一个线程已经占有了该对象所关联的monitor，当前线程阻塞进入等待队列直到该对象被解锁，然后尝试获取拥有权。如果当前线程已经拥有该对象所关联的monitor，当前线程增加monitor的表示线程进入次数的计数器。如果该对象所关联的monitor没有被任何线程拥有，当前线程变成该monitor的拥有者，设置monitor的计数器（entry count）为1.
+
+    - monitorexit
+      当前线程必须为该对象的monitor的拥有者，将表示该线程进入monitor次数的计数器减1。如果计数器的值变为0，当前线程释放monitor。如果对象关联的monitor变为自由状态，其他等待的线程才能获取monitor。
+
+    - 作用于成员方法和static方法的synchronized分别锁住this对象和类的class对象。
+
+      
+
+  - 使用java.util.concurrent.locks包中的方法来实现线程同步
+
+    - 这个包中的对象使用硬件的CAS（Compare-And-Swap）原子语义来实现同步。大致的行为是，如果该变量的值为期望的值时将其改为指定的值，否则（表示被并行的其他线程修改了）什么也不做。而这些操作是在direct memory中进行的而不是heap中，查看源代码会发现使用了sun.misc.Unsafe类来操作direct memory，这个类是没有公开的，但是网上有很多介绍使用这个类来实现高性能库的方法，可以搜一下啦。
+
+    - 这个包中主要有三个接口Condition，Lock，ReadWriteLock。 Lock锁的语义和synchronized一致，但是增加了非阻塞式加锁tryLock()，获取可以被中断的锁，以及timeout式地获取锁。
+      使用Lock的代码样例为：
+
+      ```
+      Lock l = new ReentrantLock();
+      l.lock();
+      try {
+          // Access the resource protected by this lock
+      } finally {
+          l.unlock();
+      }
+      ```
+
+    - ReadWriteLock管理一对Lock,分别进行读和写操作的加锁。便于实现读写同步。
+
+    - Condition可以通过lock.newCondition()方法来获取，它拥有的方法有await(原子地释放拥有的锁然后挂起当前线程),signal,signalAll, 实现的语义如同Object.wait, Object.notify以及Object.notifyAll方法，但是通过Condition可以在一个对象上实现多套wait集(wait-sets)。在Condition的javadoc中演示了用其实现生产者-消费者模式的示例。
+
+    
+
 - 两个进程同时要求写或者读，能不能实现？如何防止进程的同步？
+
+  能，读写锁
+
+  
 
 - 线程间操作List
 
+  - 使用线程安全的集合类，如Vector，它的所有方法都是同步的，几乎不需要自己加同步代码。
+
+  - 对于非线程安全的集合类，可以用synchronized自己做同步处理
+
+  - 对于非线程安全的集合类，可以使用同步包装方法对集合进行包装，包装后的对象（下例的list）是线程安全的。
+
+    List list = Collections.synchronizedList(new ArrayList());
+
+  
+
 - Java中对象的生命周期
+
+  - 创建阶段(Created)
+  - 应用阶段(In Use)
+  - 不可见阶段(Invisible)
+  - 不可达阶段(Unreachable)
+  - 收集阶段(Collected)
+  - 终结阶段(Finalized)
+  - 对象空间重分配阶段(De-allocated)
+
+  
 
 - synchronized用法
 
 - synchronized的原理
 
+  - Java中的每个对象都有一个monitor对象，当使用synchronized关键字来同步一段代码时，java提供monitorenter和monitorexit两个字节码指令来支持同步操作，
+
+    - monitorenter
+
+      每一个对象都关联一个monitor对象，线程执行monitorenter时获取该对象所关联的monitor的拥有权。如果另一个线程已经占有了该对象所关联的monitor，当前线程阻塞进入等待队列直到该对象被解锁，然后尝试获取拥有权。如果当前线程已经拥有该对象所关联的monitor，当前线程增加monitor的表示线程进入次数的计数器。如果该对象所关联的monitor没有被任何线程拥有，当前线程变成该monitor的拥有者，设置monitor的计数器（entry count）为1.
+
+    - monitorexit
+      当前线程必须为该对象的monitor的拥有者，将表示该线程进入monitor次数的计数器减1。如果计数器的值变为0，当前线程释放monitor。如果对象关联的monitor变为自由状态，其他等待的线程才能获取monitor。
+      作用于成员方法和static方法的synchronized分别锁住this对象和类的class对象。
+
+    - 作用于成员方法和static方法的synchronized分别锁住this对象和类的class对象。
+
+  
+
 - 谈谈对synchronized关键字，类锁，方法锁，重入锁的理解
+
+  - synchronized关键字
+
+    - 某个线程在进行unlock M操作前进行的所有写入操作对进行lock M操作的线程都是可见的。
+    - 只要用synchronized保护会被多个线程读写的共享字段，就可以避免这些共享字段受到重排序和可见性的影响
+
+  - 锁对象只有两种
+
+    - 类锁，每个类只有一个class对象
+    - 对象锁，这里的对象指类的实例，有时我们也称实例为对象，区别于class对象
+
+  - 类锁
+
+    - synchronized(ClassName.class){}：作用范围是代码块{}，锁对象是所属类的class对象
+    - synchronized静态方法：作用范围是该静态方法，锁对象是所属类的class对象。
+
+  - 对象锁（方法锁也是一种对象锁）
+
+    - synchronized(obj){}：作用范围是代码块{}，锁对象是obj实例
+    - synchronized方法：作用范围是该方法，锁对象是调用这个方法的obj实例。
+
+  - 重入锁
+
+    - 通俗说：自己可以再次获得自己内部锁。比如有1条线程获得了某对象的锁，此时这个对象锁还没有释放，当其再次想获得这个对象的锁的时候还是可以获取的，如果锁不可重入，就会造成死锁。
+
+    - 关键字synchronized拥有锁重入的功能，也就是在使用synchronized是当一个线程得到一个对象锁后，再次请求此对象锁时是可以再次得到该对象的锁的。这也证明在一个synchronized方法/块的内部掉用本类的其他synchronized方法/块是永远可以得到锁的。
+
+      
 
 - static synchronized 方法的多线程访问和作用
 
+  属于类锁，作用范围是该静态方法，锁对象是所属类的类对象。
+
+  
+
 - 同一个类里面两个synchronized方法，两个线程同时访问的问题
+
+  - 两个synchronized方法的锁对象相同，都是该实例。
+
+  - 两个线程同时访问该实例的 func1()和func2()，将同步执行，因为竞争的是同一把锁。
+
+    - 线程a执行，线程b阻塞等待
+    - 线程a执行完释放锁，线程b竞争到锁继续执行
+
+    
 
 - volatile的原理
 
@@ -626,13 +846,55 @@
 
 - 谈谈volatile关键字的作用
 
+  - 可见性
+
+    - Java中的happen-before规则：某个线程对volatile字段进行的写操作的结果对其他线程立即可见。换言之，对volatile字段的写入并不会被缓存起来。
+    - 向volatile字段写入的值如果对线程B可见，那么之前写入的所有值就都是可见的。
+
+  - 有序性
+
+    - 防止指令重排序
+
+      
+
 - 谈谈NIO的理解
+
+  Java NIO是一种新式的IO标准，与之间的普通IO的工作方式不同。标准的IO基于字节流和字符流进行操作的，而NIO是基于通道(Channel)和缓冲区(Buffer)进行操作，数据总是从通道读取到缓冲区中，或者从缓冲区写入通道也类似。
+
+  
 
 - synchronized 和volatile 关键字的区别
 
+- synchronized保证了什么特性，volatile保证了什么特性
+
+  - synchronized ：保证了可见性、原子性、有序性
+
+  - volatile：保证了可见性、防止指令重排序
+
+    
+
 - synchronized 与Lock的区别
 
+  - synchronized
+
+    - 基于JVM底层实现的数据同步，又称为对象监视器（object）
+    - 优点：实现简单，语义清晰，便于JVM堆栈跟踪，加锁解锁过程由JVM自动控制，提供了多种优化方案，使用更广泛
+    - 缺点：悲观的排他锁，不能进行高级功能
+
+  - Lock
+
+    - Lock是纯Java手写的，与底层的JVM无关。在java.util.concurrent.locks包中有很多Lock的实现类，常用的有ReenTrantLock、ReadWriteLock(实现类有ReenTrantReadWriteLock)，其实现都依赖java.util.concurrent.AbstractQueuedSynchronizer类（简称AQS）
+    - 优点：可定时的、可轮询的与可中断的锁获取操作，提供了读写锁、公平锁和非公平锁
+    - 缺点：需手动释放锁unlock，不适合JVM进行堆栈跟踪
+
+  - 都是可重入锁
+
+    
+
 - synchronized 和Lock真正锁的是什么
+
+  - synchronized：锁的是类的class对象，或类的实例
+  - Lock：锁的是
 
 - ReentrantLock 、synchronized 和volatile比较
 
@@ -642,9 +904,30 @@
 
 - 死锁的四个必要条件？
 
+  - 互斥条件：一个资源每次只能被一个进程使用。
+  - 请求与保持条件：一个进程因请求资源而阻塞时，对已获得的资源保持不放。
+  - 不剥夺条件：进程已获得的资源，在末使用完之前，不能强行剥夺。
+  - 循环等待条件：若干进程之间形成一种头尾相接的循环等待资源关系。
+
+  这四个条件是死锁的必要条件，只要系统发生死锁，这些条件必然成立，而只要上述条件之
+  一不满足，就不会发生死锁。
+
+  
+
 - 怎么避免死锁？
 
+  理解了死锁的原因，尤其是产生死锁的四个必要条件，就可以最大可能地避免、预防和
+  解除死锁。所以，在系统设计、进程调度等方面注意如何不让这四个必要条件成立，如何确
+  定资源的合理分配算法，避免进程永久占据系统资源。此外，也要防止进程在处于等待状态
+  的情况下占用资源。因此，对资源的分配要给予合理的规划。
+
+  
+
 - 对象锁和类锁是否会互相影响？
+
+  类锁和对象锁不是同一个锁，一个是类的class对象的锁，一个是类的实例的锁。也就是线程a访问类静态synchronized方法时，允许另一个线程b访问类的实例的synchronized方法。反过来也是成立的，因为他们的锁是不同的。
+
+  
 
 - 什么是线程池，如何使用?
 
@@ -653,8 +936,6 @@
 - 谈谈对多线程的理解
 
 - 可见性，原子性，有序性的理解
-
-- synchronized保证了什么特性，volatile保证了什么特性
 
 - 多线程有什么要注意的问题？
 
@@ -674,6 +955,31 @@
 学习的参考资料如下：
 
 - Java 内存模型
+
+  - 重排序
+
+    所谓重排序，英文记作Recorder，是指编译器和Java虚拟机通过改变程序的处理顺序来优化程序。
+
+  - 可见性
+
+    - 在Java内存模型中，线程A写入的值并不一定会立即对线程B可见。
+      普通操作是通过缓存（CPU的缓存，寄存器，Java虚拟机临时保存的变量）来执行的，比如线程A读内存到缓存，修改缓存并没有回写内存，线程B读内存到缓存，此时读取到的值不是最新值。也就是普通读读取到的值并不一定是最新的值，通过普遍写入的值也不一定会立即对其他线程可见。
+
+  - synchronized
+
+    - 某个线程在进行unlock M操作前进行的所有写入操作对进行lock M操作的线程都是可见的。
+    - 只要用synchronized保护会被多个线程读写的共享字段，就可以避免这些共享字段受到重排序和可见性的影响
+
+  - volatile
+
+    - Java中的happen-before规则：某个线程对volatile字段进行的写操作的结果对其他线程立即可见。换言之，对volatile字段的写入并不会被缓存起来。
+    - 向volatile字段写入的值如果对线程B可见，那么之前写入的所有值就都是可见的。
+
+  - final
+
+    当final字段的初始化结束后，无论在任何时候，它的值对其他线程都是可见的
+
+    
 
 - java线程安全总结
   深入理解java内存模型系列文章
