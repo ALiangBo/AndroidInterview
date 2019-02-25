@@ -302,7 +302,7 @@
 
     
 
-    ![img](https:////upload-images.jianshu.io/upload_images/10844298-391c3b9d11ab2ed1..jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/750/format/webp)
+    ![img](https://upload-images.jianshu.io/upload_images/10844298-391c3b9d11ab2ed1..jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/750/format/webp)
 
     image
 
@@ -358,7 +358,7 @@
 
 ### Java的异常体系
 
-  ![img](https:////upload-images.jianshu.io/upload_images/10844298-1908125aa409879e..jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/838/format/webp)
+  ![img](https://upload-images.jianshu.io/upload_images/10844298-1908125aa409879e..jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/838/format/webp)
 
   image
 

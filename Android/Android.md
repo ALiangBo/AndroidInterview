@@ -1085,7 +1085,7 @@
 
   - Context数量 = Activity数量 + Service数量 + 1
 
-  ![img](https:////upload-images.jianshu.io/upload_images/10844298-b70f98cd3d717c2c..jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp)
+  ![img](https://upload-images.jianshu.io/upload_images/10844298-b70f98cd3d717c2c..jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp)
 
   标注：
 
