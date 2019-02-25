@@ -129,6 +129,7 @@
 
   - super：<? super T>表示包括T在内的任何T的父类 下界通配符
   - extends：<? extends T>表示包括T在内的任何T的子类 上界通配符
+  - extends 和 super 的使用应该遵循 PECS 原则。即：如果是生产者则使用 extends ，如果是消费者则使用 super（简而言之就是如果只读则使用 extends ，只写则使用 super）。
 
 
 
@@ -364,6 +365,7 @@
 
   - Error是程序无法处理的错误，比如OutOfMemoryError、ThreadDeath等。这些异常发生时，Java虚拟机（JVM）一般会选择线程终止。
   - Exception是程序本身可以处理的异常，这种异常分两大类运行时异常（不检查异常）和非运行时异常（检查异常，不处理，程序就不能编译通过）。程序中应当尽可能去处理这些异常。
+  - 应用程序的异常主要分为 RuntimeException 和 IOException.由于程序逻辑导致的异常为 RuntimeException;有 I/O 操作导致的异常为 IOException
   - try、catch、finally:
     - try、catch、finally三个语句块均不能单独使用，三者可以组成 try...catch...finally、try...catch、
       try...finally三种结构，catch语句可以有一个或多个，finally语句最多一个。
@@ -371,7 +373,6 @@
       如果要在三个块中都可以访问，则需要将变量定义到这些块的外面。
     - 多个catch块时候，只会匹配其中一个异常类并执行catch块代码，而不会再执行别的catch块，
       并且匹配catch语句的顺序是由上到下。
-
   - throw: 方法体内部
   - throws: 方法体外部
 
