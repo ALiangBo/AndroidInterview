@@ -981,12 +981,16 @@
 
     
 
-- java线程安全总结
+- Java线程安全总结
   深入理解java内存模型系列文章
 
-线程状态：
+  
 
 - 一张图让你看懂JAVA线程间的状态转换
+
+  ![](https://pic4.zhimg.com/80/v2-287f87ad5328f2aa5cd7fbd48dadcd8f_hd.jpg)
+
+  
 
 锁：
 

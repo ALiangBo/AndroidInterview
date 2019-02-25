@@ -4,11 +4,17 @@
 
 > Android面试题包括Android基础，还有一些源码级别的、原理这些等。所以想去大公司面试，一定要多看看源码和实现方式，常用框架可以试试自己能不能手写实现一下，锻炼一下自己。
 
+<!-- GFM-TOC -->
 
-（一）Android基础知识点
+* [一、Android基础知识点](#一Android基础知识点)
+* [二、Android源码相关分析](#二Android源码相关分析)
+* [三、常见的一些原理性问题](#三常见的一些原理性问题)
+* [四、开发中常见的一些问题](#四开发中常见的一些问题)
+<!-- GFM-TOC -->
 
-* 四大组件是什么
+# 一、Android基础知识点
 
+### 四大组件是什么
   - Activity
     其中Activity是我们最常使用的组件，也是我们最熟悉的组件，一般用于呈现页面内容，处理用户交互等等
   - Service
@@ -20,9 +26,9 @@
     - APP内：界面间通信，例如退出app，可以发送自杀广播
     - APP间：可以收到第三方发出的广播，进而进行对应的响应操作。
 
-<br/><br/>
+<br/>
 
-* 四大组件的生命周期和简单用法
+### 四大组件的生命周期和简单用法
 
   - Activity
 
@@ -102,7 +108,9 @@
 
       
 
-* Activity之间的通信方式
+<br/>
+
+### Activity之间的通信方式
 
   - Intent
 
@@ -126,7 +134,9 @@
 
     
 
-* Activity各种情况下的生命周期
+<br/>
+
+### Activity各种情况下的生命周期
 
   - 正常情况下是：onCreate()->onStart()->onResume()->onPause()->onStop()->onDestory()
 
@@ -197,7 +207,9 @@
 
   
 
-* 横竖屏切换的时候，Activity 各种情况下的生命周期
+<br/>
+
+### 横竖屏切换的时候，Activity 各种情况下的生命周期
 
   - 不做任何配置，生命周期重新走一遍：完整流程为：onCreate() -> onStart() -> onResume() -> onPause()
 
@@ -212,7 +224,9 @@
 
   
 
-* Activity与Fragment之间生命周期比较
+<br/>
+
+### Activity与Fragment之间生命周期比较
 
   - Activity有7个生命周期，Fragment有十一个生命周期
 
@@ -237,13 +251,17 @@
 
   
 
-* Activity上有Dialog的时候按Home键时的生命周期
+<br/>
+
+### Activity上有Dialog的时候按Home键时的生命周期
 
   Dialog并不会引起Activity的生命周期变化，所以在弹框的情况下，点击home键，其Activity的生命周期与正常时一样
 
   
 
-* 两个Activity 之间跳转时必然会执行的是哪几个方法？
+<br/>
+
+### 两个Activity 之间跳转时必然会执行的是哪几个方法？
 
   - 一般情况下比如说有两个activity,分别叫A,B。
   - 当在A 里面激活B 组件的时候, A会调用onPause()方法,然后B调用onCreate() ,onStart(), onResume()。
@@ -253,7 +271,9 @@
 
   
 
-* 前台切换到后台，然后再回到前台，Activity生命周期回调方法。弹出Dialog，生命值周期回调方法。
+<br/>
+
+### 前台切换到后台，然后再回到前台，Activity生命周期回调方法。弹出Dialog，生命值周期回调方法。
 
   - 前台切换到后台：onPause()->onStop()
   - 如果正常切换回来，那么会走onRestart()->onStart()->onResume()
@@ -264,7 +284,9 @@
 
   
 
-* Activity的四种启动模式对比
+<br/>
+
+### Activity的四种启动模式对比
 
   - Standard
 
@@ -288,14 +310,18 @@
 
   
 
-* Activity状态保存于恢复
+<br/>
+
+### Activity状态保存于恢复
 
   - onSaveInstanceState(Bundle state) 保存状态
   - onRestoreInstanceState(Bundle state) 恢复状态
 
   
 
-* fragment各种情况下的生命周期
+<br/>
+
+### Fragment各种情况下的生命周期
 
   - Fragment在[Activity](https://www.baidu.com/s?wd=Activity&tn=24004469_oem_dg&rsv_dl=gh_pl_sl_csd)中replace
     - 新替换的Fragment：onAttach（） > onCreate（） > onCreateView （）> onViewCreated（） > onActivityCreated （）> onStart （）> onResume（）
@@ -336,14 +362,18 @@
 
   
 
-* 如何实现Fragment的滑动？
+<br/>
+
+### 如何实现Fragment的滑动？
 
   - 把Fragment放到ViewPager里面去
   - 把Fragment放到RecyclerView/ListView/GridView
 
   
 
-* Fragment之间传递数据的方式？
+<br/>
+
+### Fragment之间传递数据的方式？
 
   - Intent传值
 
@@ -359,7 +389,9 @@
 
     
 
-* Activity 怎么和Service 绑定？
+<br/>
+
+### Activity 怎么和Service 绑定？
 
   - 通过BindService绑定，具体步骤
 
@@ -423,13 +455,17 @@
 
   
 
-* 怎么在Activity 中启动自己对应的Service？
+<br/>
+
+### 怎么在Activity 中启动自己对应的Service？
 
   Activity通过bindService(Intent service, ServiceConnection  conn, int flags)跟Service进行绑定。同上。
 
   
 
-* Service和Activity怎么进行数据交互？
+<br/>
+
+### Service和Activity怎么进行数据交互？
 
   - Binder对象
 
@@ -437,19 +473,27 @@
 
     
 
-* [Service的开启方式](https://www.jianshu.com/p/4c798c91a613)
+<br/>
+
+### [Service的开启方式](https://www.jianshu.com/p/4c798c91a613)
 
   
 
-* [请描述一下Service 的生命周期](https://www.jianshu.com/p/4c798c91a613)
+<br/>
+
+### [请描述一下Service 的生命周期](https://www.jianshu.com/p/4c798c91a613)
 
   
 
-* [谈谈你对ContentProvider的理解](https://www.jianshu.com/p/ea8bc4aaf057)
+<br/>
+
+### [谈谈你对ContentProvider的理解](https://www.jianshu.com/p/ea8bc4aaf057)
 
   
 
-* 说说ContentProvider、ContentResolver、ContentObserver 之间的关系
+<br/>
+
+### 说说ContentProvider、ContentResolver、ContentObserver 之间的关系
 
   - ContentProvider 内容提供者,用于对外提供数据
 
@@ -463,14 +507,18 @@
 
     
 
-* 请描述一下广播BroadcastReceiver的理解
+<br/>
+
+### 请描述一下广播BroadcastReceiver的理解
 
   - 是四大组件之一,主要用于接收app发送的广播
   - 内部通信实现机制:通过android系统的Binder机制.
 
   
 
-* 广播的分类
+<br/>
+
+### 广播的分类
 
   - 无序广播
     - 优点: 完全异步,逻辑上可被任何接受者收到广播,效率高
@@ -483,14 +531,18 @@
 
   
 
-* 广播使用的方式和场景
+<br/>
+
+### 广播使用的方式和场景
 
   - 开机启动, sd卡挂载, 低电量, 外拨电话, 锁屏等
   - 比如根据产品经理要求, 设计播放音乐时, 锁屏是否决定暂停音乐.
 
   
 
-* 在manifest 和代码中如何注册和使用BroadcastReceiver?
+<br/>
+
+### 在manifest 和代码中如何注册和使用BroadcastReceiver?
 
   在清单文件中注册广播接收者称为静态注册，在代码中注册称为动态注册。静态注册的广播接收者只要 app 在系
   统中运行则一直可以接收到广播消息，动态注册的广播接收者当注册的 Activity 或者 Service 销毁了那么就接收不到
@@ -510,9 +562,13 @@
 
   
 
-* 本地广播和全局广播有什么差别？
+<br/>
 
-* BroadcastReceiver，LocalBroadcastReceiver 区别
+### 本地广播和全局广播有什么差别？
+
+<br/>
+
+### BroadcastReceiver，LocalBroadcastReceiver 区别
 
   - 全局广播 BroadcastReceiver
 
@@ -524,43 +580,55 @@
 
   
 
-* AlertDialog,popupWindow,Activity区别
+<br/>
+
+### AlertDialog,popupWindow,Activity区别
 
   - AlertDialog是非阻塞式对话框，当弹出来的时候，后台还是可以继续做事情的
   - popupWindow则是阻塞式的对话框
 
   
 
-* Application 和 Activity 的 Context 对象的区别
+<br/>
+
+### Application 和 Activity 的 Context 对象的区别
 
   - Application是全局的Context,可以用于需要长期持久的contenxt操作
   - 而Activity的Context只是属于该Activity,如果被非法持有的话，很容易导致该Activity无法被回收，造成内存泄露
 
   
 
-* Android属性动画特性
+<br/>
+
+### Android属性动画特性
 
   - 不仅限于对View进行操作（移动、缩放、旋转和淡入淡出），具备时间差值器
   - 改变了View的属性，移动是真移动，而补间动画仅仅是改变了绘制相对位置，View的坐标位置属性并未改变，所以导致点击事件还是在原位置
 
-* 差值器
+<br/>
+
+### 差值器
 
   根据初始值-终止值及时间函数，计算当前瞬间值。有线性匀速差值器，加速差值器，减速差值器等
 
-* 估值器
+<br/>
+
+### 估值器
 
   输入为差值器当前瞬间值，自定义map转换，输出目标值，类似二次差值器
 
-* 如何导入外部数据库?
+<br/>
 
+### 如何导入外部数据库?
   - 把外部建好的数据库文件放在raw中，
   - 读入该数据库文件
   - 写入到data/data/batabases文件夹中
   - 正常读取
 
-  
 
-* LinearLayout、RelativeLayout、FrameLayout的特性及对比，并介绍使用场景。
+<br/>
+
+### LinearLayout、RelativeLayout、FrameLayout的特性及对比，并介绍使用场景。
 
   - FrameLayout(框架布局)
 
@@ -599,7 +667,9 @@
 
     
 
-* 谈谈对接口与回调的理解
+<br/>
+
+### 谈谈对接口与回调的理解
 
   - You call me i call you
 
@@ -609,17 +679,23 @@
 
   
 
-* 回调的原理
+<br/>
+
+### 回调的原理
 
   传递通信信使listener，双方持有，通过listener接口实现相互跳转回调。
 
   
 
-* 写一个回调demo
+<br/>
+
+### 写一个回调demo
 
   
 
-* 介绍下SurfaceView
+<br/>
+
+### 介绍下SurfaceView
 
   - View适用于主动更新的情况，而SurfaceView则适用于被动更新的情况，比如频繁刷新界面。
 
@@ -633,11 +709,15 @@
 
   
 
-* RecycleView的使用
+<br/>
+
+### RecycleView的使用
 
   
 
-* 序列化的作用，以及Android两种序列化的区别
+<br/>
+
+### 序列化的作用，以及Android两种序列化的区别
 
   - Serializable接口
     是一个空接口，为对象提供标准的序列化和反序列化操作。
@@ -669,7 +749,9 @@
 
  
 
-* Android中数据存储方式
+<br/>
+
+### Android中数据存储方式
 
   - 文件存储
   - SharedPreferences
@@ -677,11 +759,13 @@
   - ContentProvider（进程间通信，比如媒体库media（内部实现为数据库））
   - 网络存储
 
-（二）Android源码相关分析
+二、Android源码相关分析
 
-* 源码分析：为什么补间动画没有改变view的属性，只是改变了绘制的相对位置？
+<br/>
 
-* Android动画框架实现原理
+### 源码分析：为什么补间动画没有改变view的属性，只是改变了绘制的相对位置？
+
+### Android动画框架实现原理
 
   - 补间动画
 
@@ -698,7 +782,9 @@
 
     
 
-* Android各个版本API的区别
+<br/>
+
+### Android各个版本API的区别
 
   - android 5.0引入material design风格
 
@@ -710,7 +796,9 @@
 
   
 
-* Requestlayout，onlayout，onDraw，DrawChild区别与联系
+<br/>
+
+### Requestlayout，onlayout，onDraw，DrawChild区别与联系
 
   - requestLayout
 
@@ -730,14 +818,18 @@
 
     
 
-* invalidate和postInvalidate的区别及使用
+<br/>
+
+### invalidate和postInvalidate的区别及使用
 
   - invalidate: 用于在主线程刷新View，执行自身draw方法
   - postInvalidate：用于在子线程线程刷新View，执行自身draw方法（底层是mainHandler post  -> invalidate ）
 
   
 
-* Activity - Window - View三者的差别
+<br/>
+
+### Activity - Window - View三者的差别
 
   - 通用比喻：Acitivty像一个工匠（控制单元），Window像窗户（承载模式）,View像窗花（显示视图），LayoutInflater像剪刀，xml配置像窗花图纸
   - 三者关系
@@ -753,7 +845,9 @@
 
   
 
-* 谈谈对Volley的理解
+<br/>
+
+### 谈谈对Volley的理解
 
   特性
 
@@ -770,7 +864,9 @@
 
     
 
-* 如何优化自定义View
+<br/>
+
+### 如何优化自定义View
 
   - 降低刷新频率，减少不必要的调用invalidate()方法，尽量调用多参invalidate()，能做到局部刷新而不是整体刷新
   - 减少不必要的layout()调用，因为这个方法需要遍历整个View树来获取你真实的layout位置。如果真的必须经常性地调用，那么你可以考虑写一个特殊的ViewGroup
@@ -783,7 +879,9 @@
 
   
 
-* 低版本SDK如何实现高版本api？
+<br/>
+
+### 低版本SDK如何实现高版本api？
 
   - 使用support包的方法
 
@@ -793,7 +891,9 @@
 
     
 
-* 描述一次网络请求的流程
+<br/>
+
+### 描述一次网络请求的流程
 
   域名解析、TCP的三次握手、建立TCP连接后发起HTTP请求、服务器响应HTTP请求、浏览器解析html代码，同时请求html代码中的资源（如js、css、图片等）、最后浏览器对页面进行渲染并呈现给用户
 
@@ -812,13 +912,17 @@
 
   
 
-* HttpUrlConnection 和 okhttp关系
+<br/>
+
+### HttpUrlConnection 和 okhttp关系
 
   从Android4.4开始HttpURLConnection的底层实现采用的是okHttp
 
   
 
-* Bitmap对象的理解
+<br/>
+
+### Bitmap对象的理解
 
   - Bitmap对象的内存分为两部分:
     - Bitmap对象
@@ -838,7 +942,9 @@
 
   
 
-* Looper架构
+<br/>
+
+### Looper架构
 
   封装消息循环和消息队列的一个类
 
@@ -848,7 +954,9 @@
 
   
 
-* ActivityThread，AMS，WMS的工作原理
+<br/>
+
+### ActivityThread，AMS，WMS的工作原理
 
   - AMS和WMS都属于Android中的系统服务，被所有的App公用的
 
@@ -861,7 +969,9 @@
 
   
 
-* 自定义View如何考虑机型适配
+<br/>
+
+### 自定义View如何考虑机型适配
 
   - 合理使用warp_content，match_parent。
   - 尽可能的是使用RelativeLayout。
@@ -873,17 +983,23 @@
 
   
 
-* 自定义View的事件
+<br/>
+
+### 自定义View的事件
 
   触摸&&绘制
 
   
 
-* AstncTask+HttpClient 与 AsyncHttpClient有什么区别？
+<br/>
+
+### AstncTask+HttpClient 与 AsyncHttpClient有什么区别？
 
   
 
-* LaunchMode应用场景
+<br/>
+
+### LaunchMode应用场景
 
   sinngleTop: 防抖
   singleTask: 入口Activity
@@ -891,7 +1007,9 @@
 
   
 
-* AsyncTask 如何使用?
+<br/>
+
+### AsyncTask 如何使用?
 
   AsyncTask是Android提供的一个助手类，它对Thread和Handler进行了封装，方便我们使用，asyncTask.execute() 只能在UI主线程中调用，多任务时不并发，线程池
 
@@ -906,7 +1024,9 @@
 
   
 
-* SpareArray原理
+<br/>
+
+### SpareArray原理
 
   - 当使用HashMap(K, V),如果K为整数类型时,使用SparseArray的效率更高
 
@@ -918,17 +1038,16 @@
   - key value 分别为一个数组，key是有序插入的
   - 查找key时使用二分查找法，降低了时间复杂度（O（log2n）），根据找到的key的下标取value
 
-  
+<br/>
 
-  
-
-* 请介绍下ContentProvider 是如何实现数据共享的？
+### 请介绍下ContentProvider 是如何实现数据共享的？
 
   统一了数据访问方式
 
-  
 
-* AndroidService与Activity之间通信的几种方式
+<br/>
+
+### AndroidService与Activity之间通信的几种方式
 
   - bindService 通过Binder得到Service对象
 
@@ -936,9 +1055,10 @@
 
   - ......
 
-    
 
-* IntentService原理及作用是什么？
+<br/>
+
+### IntentService原理及作用是什么？
 
   IntentService保留了Service原有的特性，并且将耗时的操作都放在的子线程中，通过Handler的回调方式实现了数据的返回。
 
@@ -949,15 +1069,17 @@
 
   通过Handler、Message、Looper在Service中实现的异步线程消息处理的机制。但是由于是通过衍生Service的方式实现的，因此具有Service的生命周期特性。
 
-  
 
-* 说说Activity、Intent、Service 是什么关系
+<br/>
+
+### 说说Activity、Intent、Service 是什么关系
 
   Activity Service 四大组件，通过Intent传递消息
 
-  
 
-* ApplicationContext和ActivityContext的区别
+<br/>
+
+### ApplicationContext和ActivityContext的区别
 
   - 生命周期长短，某些静态引用等Root持有Activity的Context会引起内存泄漏
   - 和UI相关的方法基本都不建议或者不可使用Application
@@ -974,15 +1096,17 @@
 
   - 数字3：在receiver为null时允许，在4.2或以上的版本中，用于获取黏性广播的当前值。（可以无视）
 
-  
 
-* SP是进程同步的吗?有什么方法做到同步？
+<br/>
+
+### SP是进程同步的吗?有什么方法做到同步？
 
   不是，使用 ContentProvider
 
-  
 
-* 谈谈多线程在Android中的使用
+<br/>
+
+### 谈谈多线程在Android中的使用
 
   - 避免ANR(UI线程5s 广播10s 服务20s)
   - 防止耗时操作拥堵线程  完成持续性长的耗时操作
@@ -996,9 +1120,10 @@
 
   - IntentService
 
-  
 
-* 进程和 Application 的生命周期
+<br/>
+
+### 进程和 Application 的生命周期
 
   - 进程重要级：前台（foreground）>可视（visible）>服务(service)>背景（background）>空（cache）
   - Application生命周期：
@@ -1033,9 +1158,10 @@
     }
     ```
 
-  
 
-* 封装View的时候怎么知道view的大小
+<br/>
+
+### 封装View的时候怎么知道view的大小
 
   - 调用view宽高时期view.getMeasuredWidth/Height（确保view已经测量完毕）。
 
@@ -1043,21 +1169,23 @@
   - View.post(runnable) 通过post将一个runnable投递到消息队列的尾部，当Looper调用此 runnable的时候，View也初始化好了。
   - ViewTreeObserver.addOnGlobalLayoutListener
 
-  
 
-* RecyclerView原理
+<br/>
+
+### RecyclerView原理
 
   [RecyclerView 剖析](https://link.jianshu.com/?t=http%3A%2F%2Fwww.jcodecraeer.com%2Fa%2Fanzhuokaifa%2Fandroidkaifa%2F2016%2F0630%2F4400.html)
 
   [RecyclerView 剖析 下](https://link.jianshu.com/?t=http%3A%2F%2Fwww.jcodecraeer.com%2Fa%2Fanzhuokaifa%2Fandroidkaifa%2F2016%2F0701%2F4401.html)
 
-  
 
-* AndroidManifest的作用与理解
+<br/>
 
-（三）常见的一些原理性问题
+### AndroidManifest的作用与理解
 
-* Handler机制和底层实现
+# 三、常见的一些原理性问题
+
+### Handler机制和底层实现
 
   - 在消息接收的线程初始化Handler实例，若接收消息的线程非主线程，需要开启Looper，主线程默认开启Looper，一个线程只有一个Looper与一个MessageQueue，可以拥有多个Handler。 一个Message经由Handler的发送，MessageQueue的入队，Looper的抽取，又再一次地回到Handler的怀抱
   - 底层实现
@@ -1069,9 +1197,10 @@
       - 否则，若Handler构造方法中的代理Handler.Callback不为Null，方式执行mCallback.handleMessage(msg)。
       - 否则，执行handler.handleMessage(msg)
 
-  
 
-* Handler、Thread和HandlerThread的差别
+<br/>
+
+### Handler、Thread和HandlerThread的差别
 
   - Handler: 线程间通信
 
@@ -1079,9 +1208,10 @@
 
   - HandlerThread: 内部拥有并管理一个looper的thread，减少了开发者的工作量
 
-    
 
-* handler发消息给子线程，looper怎么启动？
+<br/>
+
+### handler发消息给子线程，looper怎么启动？
 
   - 手动调用 Looper.prepare():
 
@@ -1145,16 +1275,17 @@
         }
     ```
 
-    
 
+<br/>
 
-* 关于Handler，在任何地方new Handler 都是什么线程下?
+### 关于Handler，在任何地方new Handler 都是什么线程下?
 
   Handler构造函数需要Looper，若不指定Looper，生成Handler实例时：Looper.myLooper() 通过ThreadLocal<Looper>来实现线程内Looper唯一性，即当前代码运行时所在线程的Looper。
 
-  
 
-* 主线程的Handler和Looper为什么不会阻塞卡死
+<br/>
+
+### 主线程的Handler和Looper为什么不会阻塞卡死
 
   - Epoll模型
     当没有消息的时候会epoll.wait，等待句柄写的时候再唤醒，这个时候其实是阻塞的。
@@ -1162,9 +1293,10 @@
   - 所有的UI操作都通过Handler来发消息操作。
     比如屏幕刷新16ms一个消息，你的各种点击事件，所以就会有句柄写操作，唤醒上文的wait操作，所以不会被卡死了。
 
-    
 
-* ThreadLocal原理，实现及如何保证Local属性？
+<br/>
+
+### ThreadLocal原理，实现及如何保证Local属性？
 
   - ThreadLocal并不是一个Thread，而是Thread的局部变量，也许把它命名ThreadLocalVariable更容易让人理解一些。
 
@@ -1173,24 +1305,27 @@
 
   - 实现：在ThreadLocal类中有一个table，用于存储每一个线程的变量副本，Map中元素的键为线程对象，而值对应线程的变量副本
 
-  
 
-* 请解释下在单线程模型中Message、Handler、Message Queue、Looper之间的关系
+<br/>
+
+### 请解释下在单线程模型中Message、Handler、Message Queue、Looper之间的关系
 
   在开发Android 应用时必须遵守单线程模型的原则：
 
   - 不要阻塞UI线程
   - 确保只在UI线程中访问Android UI工具包
 
-  
 
-* 请描述一下View事件传递分发机制
+<br/>
+
+### 请描述一下View事件传递分发机制
 
   dispatchTouchEvent -> onInterceptTouchEvent -> onTouchEvent
 
-  
 
-* Touch事件传递流程
+<br/>
+
+### Touch事件传递流程
 
   - 从Activity根触发TouchEvent事件
 
@@ -1220,15 +1355,17 @@
 
   - 中间任一环节的viewGroup.onInterceptTouchEvent返回true，将置当前viewGoup.mMotionTarget为Null，切断Event路径链，导致事件拦截
 
-  
 
-* 事件分发中的onTouch 和onTouchEvent 有什么区别，又该如何使用？
+<br/>
+
+### 事件分发中的onTouch 和onTouchEvent 有什么区别，又该如何使用？
 
   事件处理优先级：onTouchListener（若返回true则不向下调用）> onTouchEvent > onClickListener
 
-  
 
-* View和ViewGroup分别有哪些事件分发相关的回调方法
+<br/>
+
+### View和ViewGroup分别有哪些事件分发相关的回调方法
 
   - dispatchTouchEvent
 
@@ -1238,11 +1375,15 @@
 
     
 
-* View刷新机制
+<br/>
+
+### View刷新机制
 
   - Android每隔16.6ms会刷新一次屏幕，即60帧。
 
-* View绘制流程
+<br/>
+
+### View绘制流程
 
   - measure -> layout -> draw
   - onMeasure执行：
@@ -1258,19 +1399,30 @@
 
   
 
-* 自定义控件原理
+<br/>
 
-* 自定义View如何提供获取View属性的接口？
+### 自定义控件原理
 
-* Android代码中实现WAP方式联网
+<br/>
 
-* AsyncTask机制
+### 自定义View如何提供获取View属性的接口？
 
-* AsyncTask原理及不足
+<br/>
 
-  
+### Android代码中实现WAP方式联网
 
-* 如何取消AsyncTask？
+<br/>
+
+### AsyncTask机制
+
+<br/>
+
+### AsyncTask原理及不足
+
+
+<br/>
+
+### 如何取消AsyncTask？
 
   cancel方法 --> isCancelled()为true --> 在doInBackground中手动检查决定是否继续运行
 
@@ -1278,9 +1430,10 @@
   调用cancel()后，在doInBackground（）return后 我们将会调用onCancelled(Object) 不在调用onPostExecute(Object)
   为了保证任务更快取消掉，你应该在doInBackground（）周期性的检查iscancelled 去进行判断。
 
-  
 
-* 为什么不能在子线程更新UI？
+<br/>
+
+### 为什么不能在子线程更新UI？
 
   - Exception:Only the original thread that created a view hierarchy can touch its views
 
@@ -1299,16 +1452,20 @@
   - 设计思考：
     Android 的单线程模型，因为如果支持多线程修改 View 的话，由此产生的线程同步和线程安全问题将是非常繁琐的，所以 Android 直接就定死了，View 的操作必须在创建它的 UI 线程，从而简化了系统设计。
     有没有可以在其他非原始线程更新 ui 的情况呢？有，SurfaceView 就可以在其他线程更新。
-    
 
-* ViewRootImpl实例是在什么时候创建的，checkThread()被调用的具体时机
+
+<br/>
+
+### ViewRootImpl实例是在什么时候创建的，checkThread()被调用的具体时机
 
   - ActivityThread.handleMessage()方法是用来处理系统的各种事件，包括 Activity 的生命周期，case RESUME_ACTIVITY: handleResumeActivity()，WindowManager#addView被调用的时候会通过WindowManagerImpl#addView通过桥接的设计模式用WindowManagerGlobal#addView创建ViewRootImpl实例。同时，mDecor会作为构造函数的参数被ViewRootImpl依赖。
   - 在View更新的一些关键操作中都会调用，如layout，invalid，focus等。
   - 在 Activity 的 onResume 生命周期之前的方法，直接在子线程操作 UI 并不会报错，原因就在于 ViewRootImpl 是在 onResume 事件发生时才创建的，由于系统是在 ViewRootImpl 的 checkThread 中做判断的，所有 ViewRootImpl 没有创建之前对 UI 的操作，系统无从判断，也就不能抛出不能在主线程操作 UI 的错误信息了
 
 
-* 为什么在onCreate的时候获得View的宽高为0？
+<br/>
+
+### 为什么在onCreate的时候获得View的宽高为0？
 
   - Activity的生命周期与View的measure不是同步运行，因此在onCreate/onStart/onResume均无法正确得到
 
@@ -1316,13 +1473,16 @@
 
     
 
-* 为什么能用view.post(Runnable)去获取view的宽高？
+<br/>
+
+### 为什么能用view.post(Runnable)去获取view的宽高？
 
   performTraversals方法实际上也是被加入到消息队列中去执行的，而我们最初post的Runnable，是在performTraversals方法中将其附加到一个消息上并加入到消息队列里。所以，我们post的Runnable的消息，肯定是在performTraversals的消息之后执行的，也就是我们post的Runnable肯定是在performTraversals之后执行，而performTraversals之后，View的宽和高便计算出来了
 
-  
 
-* ANR产生的原因是什么？
+<br/>
+
+### ANR产生的原因是什么？
 
   - 当前的事件没有机会得到处理，例如UI线程正在响应另一个事件，当前事件由于某种原因被阻塞了。
 
@@ -1334,9 +1494,10 @@
 
   - Service的各个生命周期函数在特定时间（20s）内无法完成处理
 
-    
 
-* ANR定位和修正
+<br/>
+
+### ANR定位和修正
 
   - 定位
 
@@ -1348,23 +1509,26 @@
 
     - BlockCanary
 
-      
 
-* OOM是什么？
+<br/>
+
+### OOM是什么？
 
   App要求被分配的内存超出了虚拟机能允许给的内存，虚拟机抛出OOM错误。
 
-  
 
-* 什么情况导致OOM？
+<br/>
+
+### 什么情况导致OOM？
 
   - 加载对象过大
 
   - 相应资源过多，来不及加载
 
-    
 
-* 有什么解决方法可以避免OOM？
+<br/>
+
+### 有什么解决方法可以避免OOM？
 
   - 内存优化
 
@@ -1386,21 +1550,24 @@
 
   - 自定义堆内存大小
 
-  
 
-* OOM 是否可以try catch？为什么？
+<br/>
+
+### OOM 是否可以try catch？为什么？
 
   try catch 是可以解决oom后出现的崩溃，然后采取补救的措施，例如缩小图片，减少内存占用。但是这并不是解决oom的根本方法，要解决oom还必须知道oom的出现原因，来提前做出应对措施。
 
-  
 
-* 内存泄漏是什么？
+<br/>
+
+### 内存泄漏是什么？
 
   指由于疏忽或错误造成程序未能释放已经不再使用的内存的情况。内存泄漏并非指存在物理上的消失，而是应用程序分配某段内存后，由于设计错误，失去了对该段内存的控制，因而造成了内存的浪费
 
-  
 
-* 什么情况导致内存泄漏？
+<br/>
+
+### 什么情况导致内存泄漏？
 
   - 静态引用
 
@@ -1419,17 +1586,19 @@
 
     - Sensor Manager
 
-      
 
-* 如何防止线程的内存泄漏？
+<br/>
+
+### 如何防止线程的内存泄漏？
 
   - 静态内部类：切断内部类Thread对于Activity的隐式强引用
 
   - 弱引用： 切断Thread对于Activity的强引用
 
-    
 
-* 内存泄露场的解决方法
+<br/>
+
+### 内存泄露场的解决方法
 
   - 静态内部类
 
@@ -1437,9 +1606,10 @@
 
   - 注销监听
 
-    
 
-* 内存泄漏和内存溢出区别？
+<br/>
+
+### 内存泄漏和内存溢出区别？
 
   - 内存泄露Memory Leak：指由于疏忽或错误造成程序未能释放已经不再使用的内存的情况。内存泄漏并非指存在物理上的消失，而是应用程序分配某段内存后，由于设计错误，失去了对该段内存的控制，因而造成了内存的浪费
 
@@ -1447,35 +1617,43 @@
 
   - Memory Leak会最终会导致Out of Memory
 
-    
 
-* LruCache默认缓存大小
+<br/>
+
+### LruCache默认缓存大小
 
   无默认大小，必须显式指定大小
 
-  
 
-* ContentProvider的权限管理(解答：读写分离，权限控制-精确到表级，URL控制)
+<br/>
 
-* 如何通过广播拦截和abort一条短信？
+### ContentProvider的权限管理(解答：读写分离，权限控制-精确到表级，URL控制)
+
+<br/>
+
+### 如何通过广播拦截和abort一条短信？
 
   - 注册BroadcastReceiver.onReceive -> abortBroadcast()
 
-    
 
-* 广播是否可以请求网络？
+<br/>
+
+### 广播是否可以请求网络？
 
   从4.0 开始所有的网络请求都需要在线程中，广播请求网络同理 开启线程在线程中请求网络
 
-  
 
-* 广播引起ANR的时间限制是多少？
+<br/>
+
+### 广播引起ANR的时间限制是多少？
 
   10s
 
   
 
-* 计算一个View的嵌套层级
+<br/>
+
+### 计算一个View的嵌套层级
 
   ```
   public static int getDeep(@NonNull View view) {
@@ -1489,27 +1667,34 @@
   }
   ```
 
-* Activity栈
+<br/>
 
-* Android线程有没有上限？
+### Activity栈
+
+<br/>
+
+### Android线程有没有上限？
 
   没有上限的，因为资源都限制在这个进程里，你开多少线程都最多用这些资源。至于开多少最好，完全取决你的需求，合理开线程，不卡，高效是最终目标。
 
-  
 
-* 线程池有没有上限？
+<br/>
+
+### 线程池有没有上限？
 
   没有上限
 
-  
 
-* ListView重用的是什么？
+<br/>
+
+### ListView重用的是什么？
 
   移出屏幕的mScrapViews，复用
 
-  
 
-* Android为什么引入Parcelable？
+<br/>
+
+### Android为什么引入Parcelable？
 
   - Parcelable接口
     Interface for classes whose instances can be written to and restored from a Parcel。 Classes implementing the Parcelable interface must also have a static field called CREATOR， which is an object implementing theParcelable.Creator interface。
@@ -1522,18 +1707,19 @@
 
     Serializable 和 Parcelable两者最大的区别在于 存储媒介的不同，Serializable 使用 I/O 读写存储在硬盘上，而 Parcelable 是直接 在内存中读写。很明显，内存的读写速度通常大于 IO 读写，所以在 Android 中传递数据优先选择 Parcelable。Serializable 会使用反射，序列化和反序列化过程需要大量 I/O 操作， Parcelable 自已实现封送和解封（marshalled &unmarshalled）操作不需要用反射，数据也存放在 Native 内存中，效率要快很多
 
-    
 
-* 有没有尝试简化Parcelable的使用？
+<br/>
+
+### 有没有尝试简化Parcelable的使用？
 
   - AS IDE插件：android parcelable code generator
   - 注解库：@Parcelize（Kotlin）
 
-（四）开发中常见的一些问题
+# 四、开发中常见的一些问题
 
-* ListView中图片错位的问题是如何产生的?
+### ListView中图片错位的问题是如何产生的?
 
-* ListView图片加载错乱的原理和解决方案
+### ListView图片加载错乱的原理和解决方案
 
   - Item复用，且网络图片请求没有绑定tag导致
 
@@ -1543,15 +1729,21 @@
 
   - 解决方案：设置tag
 
-    
 
-* 混合开发有了解吗？
+<br/>
 
-* 知道哪些混合开发的方式？说出它们的优缺点和各自使用场景？（解答：比如:RN，weex，H5，小程序，WPA等。做Android的了解一些前端js等还是很有好处的)；
+### 混合开发有了解吗？
 
-  
 
-* 屏幕适配的处理技巧都有哪些?
+
+<br/>
+
+### 知道哪些混合开发的方式？说出它们的优缺点和各自使用场景？（解答：比如:RN，weex，H5，小程序，WPA等。做Android的了解一些前端js等还是很有好处的)；
+
+
+<br/>
+
+### 屏幕适配的处理技巧都有哪些?
 
   - 多套尺寸（480p、720p、1080p等）
 
@@ -1561,13 +1753,20 @@
 
   - 代码动态改变
 
-    
 
-* 服务器只提供数据接收接口，在多线程或多进程条件下，如何保证数据的有序到达？
+<br/>
 
-* 动态布局的理解
+### 服务器只提供数据接收接口，在多线程或多进程条件下，如何保证数据的有序到达？
 
-* 怎么去除重复代码？
+
+<br/>
+
+### 动态布局的理解
+
+
+<br/>
+
+### 怎么去除重复代码？
 
   - IDE ctrl + alt + m方法块封装
 
@@ -1577,11 +1776,16 @@
 
   - 基类
 
-    
 
-* 画出 Android 的大体架构图
+<br/>
 
-* RecycleView和ListView的区别
+### 画出 Android 的大体架构图
+
+
+
+<br/>
+
+### RecycleView和ListView的区别
 
   - RecycleView内部实现复用，ListView需要自己实现
 
@@ -1594,15 +1798,28 @@
     - 局部刷新
     - Item动画效果
 
-    
 
-* 动态权限适配方案，权限组的概念
+<br/>
 
-* Android系统为什么会设计ContentProvider？
+### 动态权限适配方案，权限组的概念
 
-* 下拉状态栏是不是影响activity的生命周期
 
-* 如果在onStop的时候做了网络请求，onResume的时候怎么恢复？
+
+<br/>
+
+### Android系统为什么会设计ContentProvider？
+
+
+
+<br/>
+
+### 下拉状态栏是不是影响activity的生命周期
+
+
+
+<br/>
+
+### 如果在onStop的时候做了网络请求，onResume的时候怎么恢复？
 
   - onResume重新请求
 
@@ -1610,13 +1827,27 @@
 
     
 
-* Bitmap使用时候注意什么？
+<br/>
 
-* Bitmap的recycler()
+### Bitmap使用时候注意什么？
 
-* Android中开启摄像头的主要步骤
 
-* ViewPager使用细节，如何设置成每次只初始化当前的Fragment，其他的不初始化？
+
+<br/>
+
+### Bitmap的recycler()
+
+
+
+<br/>
+
+### Android中开启摄像头的主要步骤
+
+
+
+<br/>
+
+### ViewPager使用细节，如何设置成每次只初始化当前的Fragment，其他的不初始化？
 
   - 懒加载
 
@@ -1626,10 +1857,26 @@
 
     
 
-* 点击事件被拦截，但是想传到下面的View，如何操作？
+<br/>
 
-* 微信主页面的实现方式
+### 点击事件被拦截，但是想传到下面的View，如何操作？
 
-* 微信上消息小红点的原理
 
-* CAS介绍（这是阿里巴巴的面试题，我不是很了解，可以参考博客: CAS简介）
+
+<br/>
+
+### 微信主页面的实现方式
+
+
+
+<br/>
+
+### 微信上消息小红点的原理
+
+
+
+<br/>
+
+### CAS介绍（这是阿里巴巴的面试题，我不是很了解，可以参考博客: CAS简介）
+
+
